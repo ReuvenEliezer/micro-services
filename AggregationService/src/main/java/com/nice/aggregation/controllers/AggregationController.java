@@ -1,7 +1,7 @@
-package com.nice.controllers;
+package com.nice.aggregation.controllers;
 
-import com.nice.services.AggregationService;
-import com.nice.utils.WsAddressConstants;
+import com.nice.aggregation.services.AggregationService;
+import com.nice.aggregation.utils.WsAddressConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

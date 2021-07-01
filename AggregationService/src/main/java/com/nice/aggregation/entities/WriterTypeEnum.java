@@ -1,9 +1,5 @@
-package com.nice.entities;
+package com.nice.aggregation.entities;
 
-import org.springframework.format.Printer;
-
-import java.io.Console;
-import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.util.HashMap;

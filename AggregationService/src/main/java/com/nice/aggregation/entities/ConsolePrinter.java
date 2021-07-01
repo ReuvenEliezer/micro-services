@@ -1,4 +1,4 @@
-package com.nice.entities;
+package com.nice.aggregation.entities;
 
 import java.io.IOException;
 import java.io.Writer;

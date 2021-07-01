@@ -1,9 +1,6 @@
-package com.nice.exception;
+package com.nice.aggregation.exception;
 
 
-/**
- * Create Custom Exception
- */
 public class ResourceNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;

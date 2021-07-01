@@ -1,6 +1,6 @@
-package com.nice.services;
+package com.nice.aggregation.services;
 
-import com.nice.entities.WriterTypeEnum;
+import com.nice.aggregation.entities.WriterTypeEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;

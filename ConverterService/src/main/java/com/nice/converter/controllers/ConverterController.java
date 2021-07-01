@@ -1,7 +1,7 @@
-package com.nice.controllers;
+package com.nice.converter.controllers;
 
-import com.nice.services.ConverterService;
-import com.nice.utils.WsAddressConstants;
+import com.nice.converter.services.ConverterService;
+import com.nice.converter.utils.WsAddressConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -30,7 +30,6 @@ public class ConverterController {
 
     @PostMapping(value = "fraction")
     public BigDecimal convertFraction(@RequestBody String fraction) {
-//        String fraction = Base64.encodeBase64String(str.getBytes());
         return converterService.convertFraction(fraction);
     }
 

@@ -1,4 +1,4 @@
-package com.nice.utils;
+package com.nice.converter.utils;
 
 public class WsAddressConstants {
 

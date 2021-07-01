@@ -1,4 +1,4 @@
-package com.nice.config;
+package com.nice.converter.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

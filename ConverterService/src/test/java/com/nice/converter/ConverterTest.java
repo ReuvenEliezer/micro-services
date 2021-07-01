@@ -1,7 +1,7 @@
-package com.nice.controllers;
+package com.nice.converter;
 
-import com.nice.ConverterApp;
-import com.nice.utils.WsAddressConstants;
+import com.nice.converter.ConverterApp;
+import com.nice.converter.utils.WsAddressConstants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -38,10 +38,9 @@ public class ConverterTest {
 
     @ParameterizedTest()
     @MethodSource({"convertArgumentsProvider"})
-    public void convertTest(String input, String convertType, Integer expected) throws InterruptedException {
+    public void convertTest(String input, String convertType, Integer expected) {
         BigDecimal bigDecimal = restTemplate.postForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input, BigDecimal.class);
         Assertions.assertEquals(expected.intValue(), bigDecimal.intValue());
-        Thread.sleep(10000);
     }
 
     @ParameterizedTest()
@@ -61,6 +60,9 @@ public class ConverterTest {
 
     private static Stream<Arguments> negativeArgumentsProvider() {
         return Stream.of(
+                Arguments.of("3/6", fractionType),
+                Arguments.of("0/1", fractionType),
+                Arguments.of("3/0", fractionType),
                 Arguments.of("$", hexType),
                 Arguments.of("3", stringType),
                 Arguments.of("a", fractionType),

@@ -1,7 +1,7 @@
-package com.nice.controllers;
+package com.nice.converter.controllers;
 
-import com.nice.exception.ErrorMessage;
-import com.nice.exception.ResourceNotFoundException;
+import com.nice.converter.exception.ErrorMessage;
+import com.nice.converter.exception.ResourceNotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -10,13 +10,7 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.util.Date;
 
-//@ResponseBody
-//@ControllerAdvice
 @RestControllerAdvice
-/**
- *https://bezkoder.com/spring-boot-restcontrolleradvice/
- //https://bezkoder.com/spring-boot-controlleradvice-exceptionhandler/
- */
 public class ControllerExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)

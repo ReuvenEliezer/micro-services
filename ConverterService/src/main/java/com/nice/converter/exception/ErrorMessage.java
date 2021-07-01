@@ -1,4 +1,4 @@
-package com.nice.exception;
+package com.nice.converter.exception;
 
 import java.util.Date;
 

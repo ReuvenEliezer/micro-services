@@ -1,4 +1,4 @@
-package com.nice.services;
+package com.nice.aggregation.services;
 
 import java.math.BigDecimal;
 

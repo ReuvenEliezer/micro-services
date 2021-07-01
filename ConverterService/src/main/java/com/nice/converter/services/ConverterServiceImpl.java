@@ -1,4 +1,4 @@
-package com.nice.services;
+package com.nice.converter.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -43,15 +43,24 @@ public class ConverterServiceImpl implements ConverterService {
         validateFraction(fraction);
         String[] split = fraction.split("/");
         BigDecimal value = BigDecimal.valueOf(Long.valueOf(split[0]).longValue()).divide(BigDecimal.valueOf(Long.valueOf(split[1]).longValue()));
+        validatePositiveNumber(value);
         queueService.put(value);
         return value;
+    }
+
+    private void validatePositiveNumber(BigDecimal value) {
+        if (value.equals(BigDecimal.ZERO) || value.signum() > 0) {
+            String message = String.format("input value '%s' is negative or zero, please insert positive number", value);
+            logger.error(message);
+            throw new IllegalArgumentException(message);
+        }
     }
 
     private void validateHex(String hex) {
         Pattern p = Pattern.compile("[0-9a-fA-F]+");
         Matcher m = p.matcher(hex);
         if (!m.matches()) {
-            String message = String.format("hex %s not valid", hex);
+            String message = String.format("hex '%s' not valid", hex);
             logger.error(message);
             throw new IllegalArgumentException(message);
 
@@ -60,7 +69,7 @@ public class ConverterServiceImpl implements ConverterService {
 
     private void validateStr(String str) {
         if (!str.chars().allMatch(Character::isLetter)) {
-            String message = String.format("str %s contains a numeric value", str);
+            String message = String.format("str '%s' contains a numeric value", str);
             logger.error(message);
             throw new IllegalArgumentException(message);
         }
@@ -68,7 +77,7 @@ public class ConverterServiceImpl implements ConverterService {
 
     private void validateFraction(String fraction) {
         if (!fraction.contains("/") || fraction.split("/").length != 2) {
-            String message = String.format("fraction %s not valid. expected '/' between 2 numbers", fraction);
+            String message = String.format("fraction '%s' not valid. expected '/' between 2 numbers", fraction);
             logger.error(message);
             throw new IllegalArgumentException(message);
         }

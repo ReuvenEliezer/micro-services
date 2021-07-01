@@ -1,4 +1,4 @@
-package com.nice.config;
+package com.nice.converter.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -10,13 +10,6 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @EnableSwagger2
-//@Import(SpringDataRestConfiguration.class)
-//@Import(BeanValidatorPluginsConfiguration.class)
-/**
- *         to open documentation go to:
- *         http://localhost:4000/swagger-ui/
- *         http://localhost:4000/<your-app-root>/api/swagger-ui/
- */
 public class SpringFoxConfig {
     @Bean
     public Docket api() {
