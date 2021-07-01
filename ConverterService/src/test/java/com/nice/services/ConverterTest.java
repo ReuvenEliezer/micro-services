@@ -37,10 +37,13 @@ public class ConverterTest {
 
     @ParameterizedTest()
     @MethodSource({"convertArgumentsProvider"})
-    public void convertTest(String input, String convertType, Integer expected) {
+    public void convertTest(String input, String convertType, Integer expected) throws InterruptedException {
         BigDecimal bigDecimal = restTemplate.postForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input, BigDecimal.class);
         Assertions.assertEquals(expected.intValue(), bigDecimal.intValue());
+        Thread.sleep(7000);
+        // TODO check in the output of aggregation service - the accumulation value by reading writer type
     }
+
 
     @ParameterizedTest()
     @MethodSource({"negativeArgumentsProvider"})
