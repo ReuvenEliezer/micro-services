@@ -3,6 +3,8 @@ package com.nice.services;
 import com.nice.entities.WriterTypeEnum;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+//import org.slf4j.Logger;
+//import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,7 @@ import java.util.concurrent.atomic.AtomicReference;
 @Service
 public class AggregationServiceImpl implements AggregationService {
 
+//    private static final Logger logger = LoggerFactory.getLogger(AggregationServiceImpl.class);
     private static final Logger logger = LogManager.getLogger(AggregationServiceImpl.class);
     private final AtomicReference<BigDecimal> valueHolder = new AtomicReference<>();
 
@@ -25,7 +28,7 @@ public class AggregationServiceImpl implements AggregationService {
             valueHolder.set(bigDecimal);
             logger.info("init value to {}", bigDecimal);
         } else {
-            valueHolder.getAndAccumulate(bigDecimal, (a, b) -> a.add(b));
+            valueHolder.getAndAccumulate(bigDecimal, BigDecimal::add);
         }
         BigDecimal valueToPrint = valueHolder.get();
         Class<? extends Writer> writer = WriterTypeEnum.getWriter(writerClassName);
@@ -38,4 +41,11 @@ public class AggregationServiceImpl implements AggregationService {
             throw new RuntimeException(String.format("failed to write value:%s to %s, Exception=%s", valueToPrint, writerClassName, e));
         }
     }
+
+    @Override
+    public BigDecimal getAggregateValue() {
+        logger.info("getAggregateValue");
+        return valueHolder.get();
+    }
+
 }

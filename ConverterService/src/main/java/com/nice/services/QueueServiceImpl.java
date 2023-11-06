@@ -1,7 +1,8 @@
 package com.nice.services;
 
 import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -14,8 +15,8 @@ import java.util.concurrent.LinkedBlockingDeque;
 @Service
 public class QueueServiceImpl implements QueueService {
 
-    private final static Logger logger = LogManager.getLogger(QueueServiceImpl.class);
-
+    private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(ConverterServiceImpl.class);
+//    private static final Logger logger = LoggerFactory.getLogger(QueueServiceImpl.class);
     private BlockingDeque<BigDecimal> blockingDeque = new LinkedBlockingDeque();
     private static final String localhost = "http://localhost:";
 
@@ -31,8 +32,9 @@ public class QueueServiceImpl implements QueueService {
 
     @Override
     public void sendAll() {
-        logger.info("sendAll queue values to aggregation service");
+        logger.info("try to sendAll queue values to aggregation service");
         while (!blockingDeque.isEmpty()) {
+            logger.info("sendAll queue values to aggregation service");
             BigDecimal value = blockingDeque.poll();
             try {
                 restTemplate.getForObject(localhost + aggServerPort + aggUrl + value, Void.class);

@@ -1,13 +1,15 @@
 package com.nice.services;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
+//import org.apache.logging.log4j.LogManager;
+//import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
-import javax.annotation.PostConstruct;
-import javax.annotation.PreDestroy;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -15,7 +17,8 @@ import java.util.concurrent.TimeUnit;
 @Service
 public class SenderScheduler {
 
-    private final static Logger logger = LogManager.getLogger(SenderScheduler.class);
+//    private static final Logger logger = LogManager.getLogger(SenderScheduler.class);
+    private static final Logger logger = LoggerFactory.getLogger(SenderScheduler.class);
 
     private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
