@@ -49,8 +49,16 @@ jobs:
       - name: Build docker images
         run: docker-compose build
       - name: Run tests
-        run: docker-compose up
-      - name: JUnit Test Report
+        run: docker-compose run zipkin
+      - name: JUnit Test Report - AggregationService
+        uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
+        if: always()
+        with:
+          name: Maven Tests - AggregationService
+          path: AggregationService/target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
+      - name: JUnit Test Report - ConverterService
         uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
         if: always()
         with:
