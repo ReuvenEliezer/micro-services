@@ -49,13 +49,13 @@ jobs:
       - name: Build docker images
         run: docker-compose build
       - name: docker compose run
-        run: docker-compose run
+        run: docker-compose up
       - name: JUnit Test Report
         uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
         if: always()
         with:
           name: Maven Tests
-          path: target/surefire-reports/*.xml
+          path: ConverterService/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
 
