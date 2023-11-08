@@ -48,8 +48,8 @@ jobs:
 #        run: mvn test
       - name: Build docker images
         run: docker-compose build
-      - name: docker compose run
-        run: docker-compose up
+      - name: Run tests
+        run: docker-compose run test
       - name: JUnit Test Report
         uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
         if: always()
