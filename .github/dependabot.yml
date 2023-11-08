@@ -4,18 +4,12 @@
 # https://docs.github.com/github/administering-a-repository/configuration-options-for-dependency-updates
 
 version: 2
-registries:
-  github-octocat:
-    type: git
-    url: https://github.com/nice-cxone
-    username: x-access-token
-    password: ${{secrets.DEPENDABOT_GITHUB_ACCESS_TOKEN}}
 updates:
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-      time: "10:02"
+      time: "11:27"
       timezone: "UTC"
     allow:
       # Allow both direct and indirect updates for all packages
@@ -26,4 +20,6 @@ updates:
         # Look for a `Dockerfile` in the `root` directory
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
+      time: "11:27"
+      timezone: "UTC"
