@@ -46,6 +46,10 @@ jobs:
 #          report_paths: '**/build/test-results/test/TEST-*.xml'
 #      - name: Run JUnit Tests
 #        run: mvn test
+      - name: Build docker images
+        run: docker-compose build
+      - name: docker compose run
+        run: docker-compose run
       - name: JUnit Test Report
         uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
         if: always()
