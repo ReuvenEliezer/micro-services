@@ -49,7 +49,7 @@ jobs:
       - name: Build docker images
         run: docker-compose build
       - name: Run tests
-        run: docker-compose run test
+        run: docker-compose up
       - name: JUnit Test Report
         uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
         if: always()
