@@ -46,10 +46,10 @@ jobs:
 #          report_paths: '**/build/test-results/test/TEST-*.xml'
 #      - name: Run JUnit Tests
 #        run: mvn test
-      - name: Build docker images
-        run: docker-compose build
-      - name: Run tests
-        run: docker-compose run zipkin
+      - name: "Set up environment"
+        run: docker compose -f docker-compose.yml up -d
+      - name: "Wait for docker to finish building"
+        run: sleep 30
       - name: JUnit Test Report - AggregationService
         uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
         if: always()
