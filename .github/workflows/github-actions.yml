@@ -62,7 +62,7 @@ jobs:
         uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
         if: always()
         with:
-          name: Maven Tests
+          name: Maven Tests - ConverterService
           path: ConverterService/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
