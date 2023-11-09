@@ -12,8 +12,8 @@
 
     <modules>
         <module>admin</module>
-        <module>AggregationService</module>
-        <module>ConverterService</module>
+        <module>aggregation-service</module>
+        <module>converter-service</module>
     </modules>
 
     <build>

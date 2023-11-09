@@ -1,20 +1,31 @@
-# Admin
-- to see all the instances open: http://localhost:8080/applications
-- u can to change the log level (by class) in log section
-# zipkin (tracing logs)
-- run docker-compose
-- to see monitoring in UI open: http://localhost:9411/zipkin/
-# Converter Controller 
-- swagger http://localhost:9091/swagger-ui/index.html#/
-- use this api to see trace-id & span-id 
-- curl -X 'GET' \
+# Nice Microservices Documentation
+
+## Admin
+
+- To view all instances, visit: http://localhost:8080/applications
+- You can change the log level (by class) in the log section.
+
+## Zipkin (Tracing Logs)
+
+- To utilize tracing logs, run docker-compose.
+- Monitor in the UI by visiting: http://localhost:9411/zipkin/
+
+## Converter Controller
+
+- Swagger documentation: http://localhost:9091/swagger-ui/index.html#/
+- Use the following API to see trace-id & span-id:
+  ```bash
+  curl -X 'GET' \
   'http://localhost:9091/convert/call-aggregate-service' \
   -H 'accept: */*'
-# Aggregation Controller
+  
+## Aggregation Controller
 - swagger http://localhost:8081/swagger-ui/index.html#/
-# Dependabot
-- upgrade all dependencies (including parent) and docker image to keep us up-to-date
-# github-actions
-- build and run tests on master branch on PR or push.
-- if one of the tests are failed - the build will be failed
-- u can see tests result under "actions" in github repository https://github.com/ReuvenEliezer/NiceMicroServices/actions 
+
+## Dependabot
+- to auto create a PR for upgrade all dependencies (including the parent) and Docker image are up-to-date.
+## GitHub Actions
+- Build and run tests on the master branch for every pull request or push.
+- If any tests fail, the build will also fail.
+- View test results under "Actions" in the GitHub repository:
+  https://github.com/ReuvenEliezer/NiceMicroServices/actions
