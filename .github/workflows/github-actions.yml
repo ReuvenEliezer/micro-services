@@ -55,7 +55,7 @@ jobs:
         if: always()
         with:
           name: Maven Tests - aggregation-service
-          path: aggregation-service/target/surefire-reports/*.xml
+          path: AggregationService/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
       - name: JUnit Test Report - converter-service
