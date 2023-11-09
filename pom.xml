@@ -12,7 +12,7 @@
 
     <modules>
         <module>admin</module>
-        <module>aggregation-service</module>
+        <module>AggregationService</module>
         <module>converter-service</module>
     </modules>
 
