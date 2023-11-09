@@ -21,9 +21,9 @@ public class WebRestConfig {
 
     // tag::aspect[]
     // To have the @Observed support we need to register this aspect
-    @Bean
-    ObservedAspect observedAspect(ObservationRegistry observationRegistry) {
-        return new ObservedAspect(observationRegistry);
-    }
+//    @Bean
+//    ObservedAspect observedAspect(ObservationRegistry observationRegistry) {
+//        return new ObservedAspect(observationRegistry);
+//    }
     // end::aspect[]
 }

@@ -16,7 +16,6 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class QueueServiceImpl implements QueueService {
 
     private static final org.apache.logging.log4j.Logger logger = LogManager.getLogger(ConverterServiceImpl.class);
-//    private static final Logger logger = LoggerFactory.getLogger(QueueServiceImpl.class);
     private BlockingDeque<BigDecimal> blockingDeque = new LinkedBlockingDeque();
     private static final String localhost = "http://localhost:";
 
