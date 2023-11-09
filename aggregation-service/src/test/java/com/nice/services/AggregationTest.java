@@ -2,10 +2,10 @@ package com.nice.services;
 
 import com.nice.AggregationApp;
 
-import org.junit.Test;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -15,7 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 public class AggregationTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(AggregationTest.class);
+    private static final Logger logger = LogManager.getLogger(AggregationTest.class);
 
     @Test
     public void test(){
