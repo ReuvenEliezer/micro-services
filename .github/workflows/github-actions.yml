@@ -50,14 +50,6 @@ jobs:
 #          report_paths: '**/build/test-results/test/TEST-*.xml'
 #      - name: Run JUnit Tests
 #        run: mvn test
-      - name: JUnit Test Report - aggregation-service
-        uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
-        if: always()
-        with:
-          name: Maven Tests - aggregation-service
-          path: AggregationService/target/surefire-reports/*.xml
-          reporter: java-junit
-          fail-on-error: true
       - name: JUnit Test Report - converter-service
         uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
         if: always()
@@ -66,6 +58,15 @@ jobs:
           path: converter-service/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
+      - name: JUnit Test Report - aggregation-service
+        uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
+        if: always()
+        with:
+          name: Maven Tests - aggregation-service
+          path: aggregation-service/target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
+
 
 
       - name: Generate build number
