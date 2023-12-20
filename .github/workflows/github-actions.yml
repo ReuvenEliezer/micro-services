@@ -8,13 +8,9 @@ on:
   pull_request:
     branches: [ master ]
 #
-permissions:
-  pull-requests: write
-  issues: write
-  repository-projects: write
 jobs:
   build:
-
+    permissions: write-all
     # <!-- This is a YAML comment for use in annotated code examples. -->
     # You can run this workflow using a different operating systems.
     #
@@ -43,7 +39,8 @@ jobs:
       # The "Build with Maven" step runs the Maven `package` target in non-interactive mode to ensure that your code builds, tests pass, and a package can be created.
       - name: Build with Maven
         run: mvn clean install
-
+      - name: Build with Maven
+        run: mvn clean install mvn test -Dspring.profiles.active=test
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
 #      - name: Update dependency graph
 #        uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
