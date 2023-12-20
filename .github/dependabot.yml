@@ -9,7 +9,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-      time: "23:55"
+      time: "00:12"
       timezone: Israel
     allow:
       # Allow both direct and indirect updates for all packages
