@@ -4,7 +4,8 @@ writer-class-name: ConsoleWriter
 
 spring:
   application:
-    name: aggregation-service
+    name: @project.artifactId@
+    version: @project.version@
   boot:
     admin:
       client:

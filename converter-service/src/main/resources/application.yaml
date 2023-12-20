@@ -2,7 +2,8 @@ server:
   port: 9091
 spring:
   application:
-    name: converter-service
+    name: @project.artifactId@
+    version: @project.version@
   boot:
     admin:
       client:

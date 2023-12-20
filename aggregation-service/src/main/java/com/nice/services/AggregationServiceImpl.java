@@ -42,7 +42,7 @@ public class AggregationServiceImpl implements AggregationService {
     @Override
     public BigDecimal getAggregateValue() {
         logger.info("getAggregateValue");
-        return valueHolder.get();
+        return valueHolder.get() != null ? valueHolder.get() : BigDecimal.ZERO;
     }
 
 }

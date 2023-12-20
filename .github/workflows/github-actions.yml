@@ -33,9 +33,9 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
       - name: "Set up environment"
-        run: docker compose -f docker-compose.yml up -d
-      - name: "Wait for docker to finish building"
-        run: sleep 10 # wait until docker container started
+        run: docker compose -f docker-compose.yml up -d --wait # wait until docker container started
+#      - name: "Wait for docker to finish building"
+#        run: sleep 10 # wait until docker container started
       # The "Build with Maven" step runs the Maven `package` target in non-interactive mode to ensure that your code builds, tests pass, and a package can be created.
       - name: Build with Maven
         run: mvn clean install
