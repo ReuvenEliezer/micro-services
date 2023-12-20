@@ -51,11 +51,12 @@ jobs:
       #      - name: Run JUnit Tests
       #        run: mvn test
       - name: JUnit Test Report - converter-service
-        uses: dorny/test-reporter@v1 #{owner}/{repository}@{ref}
+        uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
 
         if: always()
         with:
 #          github_token: ${{ secrets.github_token }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           name: Maven Tests - converter-service
           path: converter-service/target/surefire-reports/*.xml
           reporter: java-junit

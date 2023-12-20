@@ -10,7 +10,7 @@ updates:
     schedule:
       interval: "daily"
       time: "11:27"
-      timezone: "UTC"
+      timezone: Israel
     allow:
       # Allow both direct and indirect updates for all packages
       - dependency-type: "all"
@@ -22,4 +22,4 @@ updates:
     schedule:
       interval: "daily"
       time: "11:27"
-      timezone: "UTC"
+      timezone: Israel
