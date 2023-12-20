@@ -8,10 +8,6 @@ on:
   pull_request:
     branches: [ master ]
 #
-permissions:
-  pull-requests: write
-  issues: write
-  repository-projects: write
 jobs:
   build:
 
@@ -59,7 +55,7 @@ jobs:
 
         if: always()
         with:
-          github_token: ${{ secrets.github_token }}
+#          github_token: ${{ secrets.github_token }}
           name: Maven Tests - converter-service
           path: converter-service/target/surefire-reports/*.xml
           reporter: java-junit
