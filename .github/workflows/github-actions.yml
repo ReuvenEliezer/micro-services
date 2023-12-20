@@ -50,12 +50,7 @@ jobs:
       #          report_paths: '**/build/test-results/test/TEST-*.xml'
       #      - name: Run JUnit Tests
       #        run: mvn test
-      - name: JUnit Test Report aggregation-service
-        uses: mikepenz/action-junit-report@v4
-        if: success() || failure() # always run even if the previous step fails
-        with:
-          report_paths: aggregation-service/target/surefire-reports/*.xml
-      - name: JUnit Test Report converter-service
+      - name: JUnit Test Report Converter Service
         uses: mikepenz/action-junit-report@v4
         if: success() || failure() # always run even if the previous step fails
         with:
@@ -68,6 +63,12 @@ jobs:
           path: converter-service/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: false
+
+      - name: JUnit Test Report Aggregation Service
+        uses: mikepenz/action-junit-report@v4
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: aggregation-service/target/surefire-reports/*.xml
       - name: JUnit Test Report - aggregation-service
         uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
         if: always()
