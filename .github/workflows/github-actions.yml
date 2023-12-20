@@ -10,7 +10,7 @@ on:
 #
 jobs:
   build:
-    permissions: write-all
+
     # <!-- This is a YAML comment for use in annotated code examples. -->
     # You can run this workflow using a different operating systems.
     #
