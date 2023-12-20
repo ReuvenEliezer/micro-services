@@ -18,7 +18,7 @@
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <swagger.version>2.2.0</swagger.version>
+        <swagger.version>2.3.0</swagger.version>
         <junit.jupiter.version>5.7.0</junit.jupiter.version>
     </properties>
 
