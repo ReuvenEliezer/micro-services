@@ -62,7 +62,7 @@ jobs:
 #          report_paths: converter-service/target/surefire-reports/*.xml
       - name: JUnit Test Report - converter-service
         uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
-        if: always()
+        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
           name: Maven Tests - converter-service #for analysis tests report
           path: converter-service/target/surefire-reports/*.xml
@@ -76,7 +76,7 @@ jobs:
           report_paths: aggregation-service/target/surefire-reports/*.xml
       - name: JUnit Test Report - aggregation-service #for analysis tests report
         uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
-        if: always()
+        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
           name: Maven Tests - aggregation-service
           path: aggregation-service/target/surefire-reports/*.xml
