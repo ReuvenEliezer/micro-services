@@ -10,7 +10,7 @@ on:
 #
 jobs:
   build:
-    permissions: write-all
+    permissions: write-all #for dependabot auto PR - create a test report
     # <!-- This is a YAML comment for use in annotated code examples. -->
     # You can run this workflow using a different operating systems.
     #
@@ -50,38 +50,40 @@ jobs:
       #          report_paths: '**/build/test-results/test/TEST-*.xml'
       #      - name: Run JUnit Tests
       #        run: mvn test
-      - name: JUnit Test Report Converter Service  #for dependabot auto PR
+      - name: JUnit Test Report Converter Service
         uses: mikepenz/action-junit-report@v4
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: converter-service/target/surefire-reports/*.xml
-#      - name: JUnit Test Report Converter Service  #for dependabot auto PR
+#      - name: JUnit Test Report Converter Service
 #        uses: mikepenz/action-junit-report@v4.0.3
 #        if: success() || failure() # always run even if the previous step fails
 #        with:
 #          report_paths: converter-service/target/surefire-reports/*.xml
       - name: JUnit Test Report - converter-service
         uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
-        if: github.actor != 'dependabot[bot]' && (success() || failure())
+        if: (success() || failure())
+        #        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
           name: Maven Tests - converter-service #for analysis tests report
           path: converter-service/target/surefire-reports/*.xml
           reporter: java-junit
-          fail-on-error: false
+          fail-on-error: true
 
-      - name: JUnit Test Report Aggregation Service # for dependabot auto PR
+      - name: JUnit Test Report Aggregation Service
         uses: mikepenz/action-junit-report@v4
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: aggregation-service/target/surefire-reports/*.xml
       - name: JUnit Test Report - aggregation-service #for analysis tests report
         uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
-        if: github.actor != 'dependabot[bot]' && (success() || failure())
+        if: (success() || failure())
+#        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
           name: Maven Tests - aggregation-service
           path: aggregation-service/target/surefire-reports/*.xml
           reporter: java-junit
-          fail-on-error: false
+          fail-on-error: true
 
       - name: Generate build number
         id: buildnumber
