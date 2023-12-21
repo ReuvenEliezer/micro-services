@@ -7,9 +7,11 @@ version: 2
 updates:
   - package-ecosystem: "maven" # See documentation for possible values
     directory: "/" # Location of package manifests
+    permissions:
+      checks: write
     schedule:
       interval: "daily"
-      time: "12:29"
+      time: "12:35"
       timezone: Israel
     allow:
       # Allow both direct and indirect updates for all packages
