@@ -9,7 +9,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-      time: "12:17"
+      time: "12:25"
       timezone: Israel
     with:
       github-token: "${{ secrets.GITHUB_TOKEN }}"
