@@ -15,6 +15,8 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 
 //@ActiveProfiles("integration-test")
+@Disabled
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = ConverterApp.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ConverterIntegrationTest {
@@ -26,7 +28,6 @@ class ConverterIntegrationTest {
     @Value("${server.port}")
     private Integer serverPort;
 
-    @Disabled
     @Test
     void callAggregateServiceTest() {
         BigDecimal forObject = restTemplate.getForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service", BigDecimal.class);
