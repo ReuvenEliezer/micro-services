@@ -9,10 +9,8 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-      time: "12:25"
+      time: "12:29"
       timezone: Israel
-    with:
-      github-token: "${{ secrets.GITHUB_TOKEN }}"
     allow:
       # Allow both direct and indirect updates for all packages
       - dependency-type: "all"
