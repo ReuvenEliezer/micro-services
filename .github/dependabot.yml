@@ -11,7 +11,7 @@ updates:
       checks: write
     schedule:
       interval: "daily"
-      time: "12:35"
+      time: "12:51"
       timezone: Israel
     allow:
       # Allow both direct and indirect updates for all packages
