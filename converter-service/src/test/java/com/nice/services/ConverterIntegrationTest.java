@@ -43,5 +43,4 @@ class ConverterIntegrationTest {
         assertThat(res).isEqualTo("{\"status\":\"UP\"}");
     }
 
-
 }

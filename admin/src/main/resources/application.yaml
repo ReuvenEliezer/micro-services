@@ -10,10 +10,10 @@ spring:
   #       name: admin
   #       password: admin
   # configs to connect to self-register the admin server as a client
-  boot:
-    admin:
-      client:
-        url: http://localhost:8080
+#  boot:
+#    admin:
+#      client:
+#        url: http://localhost:8080
 #       username: ${spring.security.user.name}
 #       password: ${spring.security.user.password}
 # configs to give secured server info
