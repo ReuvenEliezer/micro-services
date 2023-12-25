@@ -14,8 +14,10 @@ import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 
+import static org.assertj.core.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.*;
+
 //@ActiveProfiles("integration-test")
-//@Disabled
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = ConverterApp.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -29,9 +31,16 @@ class ConverterIntegrationTest {
     private Integer serverPort;
 
     @Test
+    @Disabled
     void callAggregateServiceTest() {
         BigDecimal forObject = restTemplate.getForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service", BigDecimal.class);
-        Assertions.assertEquals(BigDecimal.ZERO, forObject);
+        assertEquals(BigDecimal.ZERO, forObject);
+    }
+
+    @Test
+    void healthByActuatorTest() {
+        String res = restTemplate.getForObject(localhost + serverPort + "/actuator/health", String.class);
+        assertThat(res).isEqualTo("{\"status\":\"UP\"}");
     }
 
 
