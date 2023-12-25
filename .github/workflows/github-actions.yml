@@ -60,7 +60,7 @@ jobs:
 #        if: success() || failure() # always run even if the previous step fails
 #        with:
 #          report_paths: converter-service/target/surefire-reports/*.xml
-      - name: JUnit Test Report - converter-service
+      - name: converter-service JUnit Test Report
         uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
         if: (success() || failure())
         #        if: github.actor != 'dependabot[bot]' && (success() || failure())
@@ -75,7 +75,7 @@ jobs:
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: aggregation-service/target/surefire-reports/*.xml
-      - name: JUnit Test Report - aggregation-service #for analysis tests report
+      - name: aggregation-service JUnit Test Report #for analysis tests report
         uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
         if: (success() || failure())
 #        if: github.actor != 'dependabot[bot]' && (success() || failure())
@@ -89,7 +89,7 @@ jobs:
         if: success() || failure() # always run even if the previous step fails
         with:
           report_paths: admin/target/surefire-reports/*.xml
-      - name: JUnit Test Report - admin-service #for analysis tests report
+      - name: admin-service JUnit Test Report #for analysis tests report
         uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
         if: (success() || failure())
         #        if: github.actor != 'dependabot[bot]' && (success() || failure())
