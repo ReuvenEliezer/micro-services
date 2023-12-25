@@ -65,7 +65,7 @@ jobs:
         if: (success() || failure())
         #        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
-          name: Maven Tests - converter-service #for analysis tests report
+          name: Tests - converter-service #for analysis tests report
           path: converter-service/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
@@ -80,24 +80,34 @@ jobs:
         if: (success() || failure())
 #        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
-          name: Maven Tests - aggregation-service
+          name: Tests - aggregation-service
           path: aggregation-service/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
-
+      - name: JUnit Test Report Admin Service
+        uses: mikepenz/action-junit-report@v4
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: admin-service/target/surefire-reports/*.xml
+      - name: JUnit Test Report - admin-service #for analysis tests report
+        uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
+        if: (success() || failure())
+        #        if: github.actor != 'dependabot[bot]' && (success() || failure())
+        with:
+          name: Tests - aggregation-service
+          path: admin-service/target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
       - name: Generate build number
         id: buildnumber
         uses: einaregilsson/build-number@v3
         with:
           token: ${{secrets.github_token}}
-
       # Now you can pass ${{ steps.buildnumber.outputs.build_number }} to the next steps.
       - name: Another step as an example
         uses: actions/hello-world-docker-action@v1
         with:
           who-to-greet: ${{ steps.buildnumber.outputs.build_number }}
-
-
       - name: Output Run ID
         run: echo ${{ github.run_id }}
       - name: Output Run Number
