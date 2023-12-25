@@ -15,7 +15,7 @@ import org.springframework.web.client.RestTemplate;
 import java.math.BigDecimal;
 
 //@ActiveProfiles("integration-test")
-@Disabled
+//@Disabled
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = ConverterApp.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
