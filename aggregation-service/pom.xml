@@ -49,7 +49,7 @@
         <dependency>
             <groupId>io.zipkin.reporter2</groupId>
             <artifactId>zipkin-reporter-brave</artifactId>
-            <version>3.0.0</version>
+            <version>3.2.1</version>
         </dependency>
 
         <dependency>
