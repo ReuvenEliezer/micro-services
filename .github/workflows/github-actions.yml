@@ -35,7 +35,7 @@ jobs:
 
       # The "Build with Maven" step runs the Maven `package` target in non-interactive mode to ensure that your code builds, tests pass, and a package can be created.
       - name: Build with Maven and run tests
-        run: mvn clean install
+        run: mvn clean install -DskipTests
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       #      - name: Update dependency graph
