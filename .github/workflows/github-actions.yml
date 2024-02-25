@@ -119,7 +119,7 @@ jobs:
 
 
       - name: "docker compose down"
-        run: docker compose down -d --wait
+        run: docker compose down --wait
       - name: "docker compose integration up"
         run: docker compose -f docker-compose-integration.yml up -d --wait
 #      - name: "Wait for docker to finish building"
