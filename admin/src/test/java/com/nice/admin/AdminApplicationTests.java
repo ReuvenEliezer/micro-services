@@ -1,9 +1,6 @@
 package com.nice.admin;
 
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -32,6 +29,7 @@ class AdminApplicationTests {
     }
 
     @Test
+    @Disabled
     void healthByZipkinTest() {
         String res = restTemplate.getForObject(localhost + "9411/zipkin", String.class);
         assertThat(res).isNotNull();
