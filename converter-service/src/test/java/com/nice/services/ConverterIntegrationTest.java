@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -20,7 +21,8 @@ import java.util.stream.Stream;
 import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("integration-tests")
-@Disabled
+//@Disabled
+@EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
 @SpringBootTest
 class ConverterIntegrationTest {
     private static final String localhost = "http://localhost:";
@@ -39,7 +41,7 @@ class ConverterIntegrationTest {
 //    @Disabled
     void callAggregateServiceTest() {
         BigDecimal forObject = restTemplate.getForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service", BigDecimal.class);
-        assertThat(forObject).isEqualTo(BigDecimal.ZERO);
+        assertThat(forObject).isGreaterThan(BigDecimal.ZERO);
     }
 
     @Test
