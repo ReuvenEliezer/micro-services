@@ -97,7 +97,7 @@ jobs:
         if: (success() || failure())
         #        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
-          name: Tests - admin-service
+          name: Tests - aggregation-service
           path: admin/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true

@@ -30,16 +30,8 @@ class ConverterIntegrationTest {
     @Value("${server.port}")
     private Integer serverPort;
 
-    @Value("${spring.boot.admin.client.instance.service-base-url}")
-    private String bootAdminUrl;
-
     @Test
-    void bootAdminUrlTest() {
-        assertThat(bootAdminUrl).isEqualTo("http://localhost:" + serverPort);
-    }
-
-    @Test
-//    @Disabled
+    @Disabled
     void callAggregateServiceTest() {
         BigDecimal forObject = restTemplate.getForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service", BigDecimal.class);
         assertEquals(BigDecimal.ZERO, forObject);

@@ -7,6 +7,9 @@ import org.springframework.context.annotation.ComponentScan;
 
 @EnableAdminServer
 @SpringBootApplication
+@ComponentScan(basePackages = {
+        "com.nice.admin.config",
+})
 public class AdminApplication {
     //http://localhost:8080/applications
     public static void main(String[] args) {
