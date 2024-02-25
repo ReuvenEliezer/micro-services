@@ -33,8 +33,13 @@ jobs:
           java-version: '17'
           distribution: 'corretto'
 
+      - name: "Set up environment"
+        run: docker compose -f docker-compose.yml up -d --wait
+      #      - name: "Wait for docker to finish building"
+      #        run: sleep 10 # wait until docker container started
+
       # The "Build with Maven" step runs the Maven `package` target in non-interactive mode to ensure that your code builds, tests pass, and a package can be created.
-      - name: Build with Maven
+      - name: Build with Maven and run tests
         run: mvn clean install
 
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
@@ -112,7 +117,10 @@ jobs:
       - name: Output Run Attempt
         run: echo ${{ github.run_attempt }}
 
-      - name: "Set up environment"
-        run: docker compose -f docker-compose.yml up -d --wait
+
+      - name: "docker compose down"
+        run: docker compose down -d --wait
+      - name: "docker compose integration up"
+        run: docker compose -f docker-compose-integration.yml up -d --wait
 #      - name: "Wait for docker to finish building"
 #        run: sleep 10 # wait until docker container started

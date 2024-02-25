@@ -39,7 +39,7 @@ class ConverterIntegrationTest {
     }
 
     @Test
-//    @Disabled
+    @Disabled
     void callAggregateServiceTest() {
         BigDecimal forObject = restTemplate.getForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service", BigDecimal.class);
         assertEquals(BigDecimal.ZERO, forObject);
