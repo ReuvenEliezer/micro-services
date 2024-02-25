@@ -23,7 +23,9 @@ import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
-@ActiveProfiles("integration-tests")
+//@ActiveProfiles("integration-tests")
+//@EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
+
 //@Disabled
 @SpringBootTest
 class ConverterIntegrationTest {
@@ -45,6 +47,10 @@ class ConverterIntegrationTest {
     private Integer serverPort;
 
 
+    @Test
+    void test() {
+        logger.info("test");
+    }
     @Test
 //    @Disabled
     @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)

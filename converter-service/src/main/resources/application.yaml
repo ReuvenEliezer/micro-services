@@ -2,10 +2,10 @@ server:
   port: 9091
 spring:
   profiles:
-    active: @spring.profiles.active@
+    active: '@spring.profiles.active@'
   application:
-    name: @project.artifactId@
-    version: @project.version@
+    name: '@project.artifactId@'
+    version: '@project.version@'
   boot:
     admin:
       client:
