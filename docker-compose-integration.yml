@@ -11,13 +11,13 @@ services:
     image: admin-server:latest
     ports:
       - "8080:8080"
-#  aggregation-service:
-#    build:
-#      context: aggregation-service
-#      dockerfile: Dockerfile
-#    image: aggregation-server:latest
-#    ports:
-#      - "8081:8081" # for scaling-services https://www.baeldung.com/dockerizing-spring-boot-application#3-scaling-services
+  aggregation-service:
+    build:
+      context: aggregation-service
+      dockerfile: Dockerfile
+    image: aggregation-server:latest
+    ports:
+      - "8081:8081" # for scaling-services https://www.baeldung.com/dockerizing-spring-boot-application#3-scaling-services
   converter-service:
     build:
       context: converter-service

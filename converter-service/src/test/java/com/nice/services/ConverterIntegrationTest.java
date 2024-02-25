@@ -1,5 +1,6 @@
 package com.nice.services;
 
+import com.nice.ConverterApp;
 import com.nice.utils.WsAddressConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -12,6 +13,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
@@ -27,7 +29,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //@EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
 
 //@Disabled
-@SpringBootTest
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ConverterApp.class)
 class ConverterIntegrationTest {
 
     private static final Logger logger = LogManager.getLogger(ConverterIntegrationTest.class);
@@ -43,8 +45,11 @@ class ConverterIntegrationTest {
     @Autowired
     private Environment environment;
 
-    @Value("${server.port}")
-    private Integer serverPort;
+//    @Value("${server.port}")
+//    private Integer serverPort;
+
+    @LocalServerPort
+    private int serverPort;
 
 
     @Test
