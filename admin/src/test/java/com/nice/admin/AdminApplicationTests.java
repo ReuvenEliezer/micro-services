@@ -14,8 +14,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 class AdminApplicationTests {
     private static final String localhost = "http://localhost:";
 
-    @Autowired
-    private RestTemplate restTemplate;
+    private static final RestTemplate restTemplate = new RestTemplate();
 
 
     @Test
