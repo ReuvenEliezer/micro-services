@@ -118,11 +118,30 @@ jobs:
         run: echo ${{ github.run_attempt }}
 
 
-#      - name: "docker compose down"
-#        run: docker compose down
-#      - name: "docker compose integration up"
-#        run: docker compose -f docker-compose-integration.yml up -d --wait
-#        #      - name: "Wait for docker to finish building"
-#        #        run: sleep 10 # wait until docker container started
+      - name: "docker compose down"
+        run: docker compose down
+      - name: "Wait for docker down"
+        run: sleep 60 # wait until docker container down
+      - name: "docker compose integration up"
+        run: docker compose -f docker-compose-integration.yml up -d --wait
       - name: "run integration tests"
         run: mvn test -Dspring.profiles.active=integration-tests
+      - name: Converter integration Test Report
+        uses: mikepenz/action-junit-report@v4
+        if: success() || failure() # always run even if the previous step fails
+        with:
+          report_paths: converter-service/target/surefire-reports/*.xml
+         #      - name: JUnit Test Report Converter Service
+         #        uses: mikepenz/action-junit-report@v4.0.3
+         #        if: success() || failure() # always run even if the previous step fails
+         #        with:
+         #          report_paths: converter-service/target/surefire-reports/*.xml
+      - name: converter-service integration Test Report
+        uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
+        if: (success() || failure())
+       #        if: github.actor != 'dependabot[bot]' && (success() || failure())
+        with:
+          name: Integration Tests - converter-service #for analysis tests report
+          path: converter-service/target/surefire-reports/*.xml
+          reporter: java-junit
+          fail-on-error: true
