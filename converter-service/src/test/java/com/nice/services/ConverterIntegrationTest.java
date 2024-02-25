@@ -1,6 +1,8 @@
 package com.nice.services;
 
 import com.nice.utils.WsAddressConstants;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
@@ -10,6 +12,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.core.env.Environment;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.web.client.HttpServerErrorException;
@@ -22,9 +25,11 @@ import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 @ActiveProfiles("integration-tests")
 //@Disabled
-@EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
 @SpringBootTest
 class ConverterIntegrationTest {
+
+    private static final Logger logger = LogManager.getLogger(ConverterIntegrationTest.class);
+
     private static final String localhost = "http://localhost:";
     private static final String stringType = "string";
     private static final String hexType = "hex";
@@ -33,18 +38,28 @@ class ConverterIntegrationTest {
     @Autowired
     private RestTemplate restTemplate;
 
+    @Autowired
+    private Environment environment;
+
     @Value("${server.port}")
     private Integer serverPort;
 
 
     @Test
 //    @Disabled
+    @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
     void callAggregateServiceTest() {
+        logger.info("callAggregateServiceTest");
+        String[] activeProfiles = environment.getActiveProfiles();
+        for (String activeProfile : activeProfiles) {
+            logger.info("activeProfile: " + activeProfile);
+        }
         BigDecimal forObject = restTemplate.getForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service", BigDecimal.class);
         assertThat(forObject).isGreaterThan(BigDecimal.ZERO);
     }
 
     @Test
+    @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
     void healthByActuatorTest() {
         String res = restTemplate.getForObject(localhost + serverPort + "/actuator/health", String.class);
         assertThat(res).isEqualTo("{\"status\":\"UP\"}");
@@ -52,6 +67,7 @@ class ConverterIntegrationTest {
 
     @ParameterizedTest()
     @MethodSource({"convertArgumentsProvider"})
+    @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
     void convertTest(String input, String convertType, Integer expected) throws InterruptedException {
         BigDecimal bigDecimal = restTemplate.postForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input, BigDecimal.class);
         Assertions.assertEquals(expected.intValue(), bigDecimal.intValue());
@@ -62,6 +78,7 @@ class ConverterIntegrationTest {
 
     @ParameterizedTest()
     @MethodSource({"negativeArgumentsProvider"})
+    @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
     void negativeTest(String input, String convertType) {
         Assertions.assertThrows(HttpServerErrorException.InternalServerError.class, () ->
                 restTemplate.postForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input, BigDecimal.class));
