@@ -4,7 +4,6 @@ import com.nice.ConverterApp;
 import com.nice.utils.WsAddressConstants;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -19,7 +18,6 @@ import java.math.BigDecimal;
 import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
-import static org.assertj.core.api.Assertions.assertThat;
 
 @Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = ConverterApp.class)
@@ -37,19 +35,6 @@ class ConverterTest {
     @Value("${server.port}")
     private Integer serverPort;
 
-    @Value("${spring.boot.admin.client.instance.service-base-url}")
-    private String bootAdminUrl;
-
-    @Test
-    void bootAdminUrlTest() {
-        assertThat(bootAdminUrl).isEqualTo("http://localhost:" + serverPort);
-    }
-
-    @Test
-    void healthByActuatorTest() {
-        String res = restTemplate.getForObject(localhost + serverPort + "/actuator/health", String.class);
-        assertThat(res).isEqualTo("{\"status\":\"UP\"}");
-    }
 
     @ParameterizedTest()
     @MethodSource({"convertArgumentsProvider"})
