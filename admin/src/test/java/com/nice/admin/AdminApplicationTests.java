@@ -1,18 +1,23 @@
 package com.nice.admin;
 
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.event.annotation.AfterTestClass;
+import org.springframework.test.context.event.annotation.AfterTestMethod;
 import org.springframework.web.client.RestTemplate;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = AdminApplication.class)
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_CLASS)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class AdminApplicationTests {
     private static final String localhost = "http://localhost:";
 
@@ -21,7 +26,7 @@ class AdminApplicationTests {
     @Autowired
     private ApplicationContext applicationContext;
 
-    @AfterTestClass
+    @AfterAll
     public void tearDown(){
         SpringApplication.exit(applicationContext);
     }
