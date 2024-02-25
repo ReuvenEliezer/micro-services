@@ -4,13 +4,13 @@ services:
     image: openzipkin/zipkin
     ports:
        - "9411:9411"
-  admin-service:
-    build:
-      context: admin
-      dockerfile: Dockerfile
-    image: admin-server:latest
-    ports:
-      - "18080:8080"
+#  admin-service:
+#    build:
+#      context: admin
+#      dockerfile: Dockerfile
+#    image: admin-server:latest
+#    ports:
+#      - "8080:8080"
   aggregation-service:
     build:
       context: aggregation-service
