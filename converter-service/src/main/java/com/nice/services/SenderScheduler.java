@@ -17,32 +17,27 @@ public class SenderScheduler {
 
     private static final Logger logger = LogManager.getLogger(SenderScheduler.class);
 
-    private ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    private static ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
 
-    @Value("${scheduler.sendEveryPeriodTimeInMillis}")
-    private Integer sendEveryPeriodTimeInMillis;
+    private final QueueService queueService;
 
-    @Autowired
-    private QueueService queueService;
-
-
-    @PostConstruct
-    private void init() {
+    public SenderScheduler(QueueService queueService, @Value("${scheduler.sendEveryPeriodTimeInMillis}") Integer sendEveryPeriodTimeInMillis) {
+        this.queueService = queueService;
         executorService.scheduleWithFixedDelay(this::sendToAggregation, sendEveryPeriodTimeInMillis, sendEveryPeriodTimeInMillis, TimeUnit.MILLISECONDS);
-        logger.info("init");
     }
+
 
     private void sendToAggregation() {
         queueService.sendAll();
     }
 
     @PreDestroy
-    private void preDestroy() {
+    private static void preDestroy() {
         if (executorService != null) {
             logger.info("preDestroy");
             executorService.shutdown();
+            executorService = null;
         }
-        executorService = null;
     }
 
 }

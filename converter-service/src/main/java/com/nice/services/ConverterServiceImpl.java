@@ -14,8 +14,11 @@ public class ConverterServiceImpl implements ConverterService {
 
     private static final Logger logger = LogManager.getLogger(ConverterServiceImpl.class);
 
-    @Autowired
-    private QueueService queueService;
+    private final QueueService queueService;
+
+    public ConverterServiceImpl(QueueService queueService) {
+        this.queueService = queueService;
+    }
 
     @Override
     public BigDecimal convertStr(String str) {

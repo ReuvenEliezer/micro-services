@@ -2,7 +2,6 @@ package com.nice.services;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -15,17 +14,19 @@ import java.util.concurrent.LinkedBlockingDeque;
 public class QueueServiceImpl implements QueueService {
 
     private static final Logger logger = LogManager.getLogger(QueueServiceImpl.class);
-    private BlockingDeque<BigDecimal> blockingDeque = new LinkedBlockingDeque();
-    private static final String localhost = "http://localhost:";
+    private static final BlockingDeque<BigDecimal> blockingDeque = new LinkedBlockingDeque<>();
+    private static final String LOCAL_HOST = "http://localhost:";
+    private final RestTemplate restTemplate;
+    private final Integer aggServerPort;
+    private final String aggUrl;
 
-    @Autowired
-    private RestTemplate restTemplate;
-
-    @Value("${aggregation.server.port}")
-    private Integer aggServerPort;
-
-    @Value("${aggregation.url}")
-    private String aggUrl;
+    public QueueServiceImpl(RestTemplate restTemplate,
+                            @Value("${aggregation.server.port}") Integer aggServerPort,
+                            @Value("${aggregation.url}") String aggUrl) {
+        this.restTemplate = restTemplate;
+        this.aggServerPort = aggServerPort;
+        this.aggUrl = aggUrl;
+    }
 
 
     @Override
@@ -35,7 +36,7 @@ public class QueueServiceImpl implements QueueService {
             logger.info("sendAll queue values to aggregation service");
             BigDecimal value = blockingDeque.poll();
             try {
-                restTemplate.getForObject(localhost + aggServerPort + aggUrl + value, Void.class);
+                restTemplate.getForObject(LOCAL_HOST + aggServerPort + aggUrl + value, Void.class);
             } catch (Exception e) {
                 logger.error("failed to sent value '{}' to aggregation server", value, e);
             }

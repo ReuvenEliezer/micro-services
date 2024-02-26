@@ -51,10 +51,10 @@ class ConverterIntegrationTest {
     @LocalServerPort
     private int serverPort;
 
-
     @Test
-    void test() {
-        logger.info("test");
+    void healthByZipkinTest() {
+        String res = restTemplate.getForObject(localhost + "9411/zipkin", String.class);
+        assertThat(res).isNotNull();
     }
     @Test
     void callAggregateServiceTest() {

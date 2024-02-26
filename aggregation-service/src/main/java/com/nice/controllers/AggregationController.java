@@ -18,8 +18,11 @@ public class AggregationController {
 
     private static final Logger logger = LogManager.getLogger(AggregationController.class);
 
-    @Autowired
-    private AggregationService aggregationService;
+    private final AggregationService aggregationService;
+
+    public AggregationController(AggregationService aggregationService) {
+        this.aggregationService = aggregationService;
+    }
 
     @GetMapping(value = "{value:.+}")
     public void aggregate(@PathVariable BigDecimal value) {
