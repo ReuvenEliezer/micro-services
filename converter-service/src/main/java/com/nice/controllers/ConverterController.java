@@ -15,14 +15,14 @@ import java.math.BigDecimal;
 public class ConverterController {
 
     private static final Logger logger = LogManager.getLogger(ConverterController.class);
+    private static final String LOCAL_HOST = "http://localhost:";
+    private final ConverterService converterService;
+    private final RestTemplate restTemplate;
 
-    private static final String localhost = "http://localhost:";
-
-    @Autowired
-    private ConverterService converterService;
-
-    @Autowired
-    private RestTemplate restTemplate;
+    public ConverterController(ConverterService converterService, RestTemplate restTemplate) {
+        this.converterService = converterService;
+        this.restTemplate = restTemplate;
+    }
 
 
     @PostMapping(value = "string")
@@ -43,7 +43,7 @@ public class ConverterController {
     @GetMapping(value = "call-aggregate-service")
     public BigDecimal getAggregateValue() {
         logger.info("call-aggregate-service: getAggregateValue");
-        return restTemplate.getForObject(localhost + 8081 + "/aggregate/get-aggregate-value" , BigDecimal.class);
+        return restTemplate.getForObject(LOCAL_HOST + 8081 + "/aggregate/get-aggregate-value" , BigDecimal.class);
     }
 
 }
