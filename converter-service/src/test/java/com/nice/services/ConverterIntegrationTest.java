@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
 //@ActiveProfiles("integration-tests")
-//@EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
+@EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
 
 //@Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ConverterApp.class)
@@ -57,8 +57,6 @@ class ConverterIntegrationTest {
         logger.info("test");
     }
     @Test
-//    @Disabled
-    @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
     void callAggregateServiceTest() {
         logger.info("callAggregateServiceTest");
         String[] activeProfiles = environment.getActiveProfiles();
@@ -70,7 +68,6 @@ class ConverterIntegrationTest {
     }
 
     @Test
-    @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
     void healthByActuatorTest() {
         String res = restTemplate.getForObject(localhost + serverPort + "/actuator/health", String.class);
         assertThat(res).isEqualTo("{\"status\":\"UP\"}");
@@ -78,7 +75,6 @@ class ConverterIntegrationTest {
 
     @ParameterizedTest()
     @MethodSource({"convertArgumentsProvider"})
-    @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
     void convertTest(String input, String convertType, Integer expected) throws InterruptedException {
         BigDecimal bigDecimal = restTemplate.postForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input, BigDecimal.class);
         Assertions.assertEquals(expected.intValue(), bigDecimal.intValue());
@@ -89,7 +85,6 @@ class ConverterIntegrationTest {
 
     @ParameterizedTest()
     @MethodSource({"negativeArgumentsProvider"})
-    @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
     void negativeTest(String input, String convertType) {
         Assertions.assertThrows(HttpServerErrorException.InternalServerError.class, () ->
                 restTemplate.postForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input, BigDecimal.class));
