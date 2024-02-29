@@ -58,7 +58,7 @@ jobs:
 #        with:
 #          report_paths: converter-service/target/surefire-reports/*.xml
       - name: converter-service JUnit Test Report
-        uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
+        uses: dorny/test-reporter@v1.8.0 #{owner}/{repository}@{ref}
         if: (success() || failure())
         #        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
@@ -67,7 +67,7 @@ jobs:
           reporter: java-junit
           fail-on-error: true
       - name: aggregation-service JUnit Test Report #for analysis tests report
-        uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
+        uses: dorny/test-reporter@v1.8.0 #{owner}/{repository}@{ref}
         if: (success() || failure())
 #        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
@@ -102,7 +102,7 @@ jobs:
       - name: "run integration tests"
         run: mvn test -Dspring.profiles.active=integration-tests
       - name: converter-service integration Test Report
-        uses: dorny/test-reporter@v1.7.0 #{owner}/{repository}@{ref}
+        uses: dorny/test-reporter@v1.8.0 #{owner}/{repository}@{ref}
         if: (success() || failure())
        #        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
