@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.env.Environment;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.web.client.HttpServerErrorException;
@@ -25,11 +26,11 @@ import java.util.stream.Stream;
 
 import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
-//@ActiveProfiles("integration-tests")
+//@ActiveProfiles(profiles = "integration-tests") //https://stackoverflow.com/questions/44055969/in-spring-what-is-the-difference-between-profile-and-activeprofiles
 @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
-
 //@Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ConverterApp.class)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ConverterIntegrationTest {
 
     private static final Logger logger = LogManager.getLogger(ConverterIntegrationTest.class);
@@ -45,9 +46,7 @@ class ConverterIntegrationTest {
     @Autowired
     private Environment environment;
 
-//    @Value("${server.port}")
-//    private Integer serverPort;
-
+    //    @Value("${server.port}")
     @LocalServerPort
     private int serverPort;
 

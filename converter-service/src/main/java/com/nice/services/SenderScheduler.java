@@ -17,12 +17,13 @@ public class SenderScheduler {
 
     private static final Logger logger = LogManager.getLogger(SenderScheduler.class);
 
-    private static ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+    private static ScheduledExecutorService executorService;
 
     private final QueueService queueService;
 
     public SenderScheduler(QueueService queueService, @Value("${scheduler.sendEveryPeriodTimeInMillis}") Integer sendEveryPeriodTimeInMillis) {
         this.queueService = queueService;
+        executorService = Executors.newSingleThreadScheduledExecutor();
         executorService.scheduleWithFixedDelay(this::sendToAggregation, sendEveryPeriodTimeInMillis, sendEveryPeriodTimeInMillis, TimeUnit.MILLISECONDS);
     }
 

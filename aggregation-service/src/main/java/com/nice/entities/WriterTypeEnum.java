@@ -10,15 +10,15 @@ public enum WriterTypeEnum {
     CONSOLE_WRITER("ConsoleWriter", ConsolePrinter.class),
     ;
 
-    private Class<? extends Writer> writer;
-    private String writerClassName;
+    private final Class<? extends Writer> writer;
+    private final String writerClassName;
 
     WriterTypeEnum(String writerClassName, Class<? extends Writer> writer) {
         this.writer = writer;
         this.writerClassName = writerClassName;
     }
 
-    private static Map<String, Class<? extends Writer>> map = new HashMap<>();
+    private static final Map<String, Class<? extends Writer>> map = new HashMap<>();
 
     static {
         for (WriterTypeEnum type : WriterTypeEnum.values()) {

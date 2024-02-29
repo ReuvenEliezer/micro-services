@@ -116,9 +116,6 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
         </plugins>
-        <resources>
-
-        </resources>
     </build>
 
 </project>
