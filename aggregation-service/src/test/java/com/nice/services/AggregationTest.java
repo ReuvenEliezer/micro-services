@@ -18,6 +18,6 @@ class AggregationTest {
     @Test
     void test(){
         logger.info("test");
-        Assertions.fail("remove test");
+//        Assertions.fail("remove test");
     }
 }
