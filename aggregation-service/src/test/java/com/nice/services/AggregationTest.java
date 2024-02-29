@@ -4,7 +4,7 @@ import com.nice.AggregationApp;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.junit.jupiter.api.Assertions;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.annotation.DirtiesContext;
@@ -17,7 +17,7 @@ class AggregationTest {
 
     @Test
     void test(){
-//        Assertions.fail("remove test");
         logger.info("test");
+        Assertions.fail("remove test");
     }
 }

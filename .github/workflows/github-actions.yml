@@ -39,9 +39,10 @@ jobs:
       #        run: sleep 10 # wait until docker container started
 
       # The "Build with Maven" step runs the Maven `package` target in non-interactive mode to ensure that your code builds, tests pass, and a package can be created.
-      - name: Build with Maven and run tests
-        run: mvn clean install
-
+      - name: Build by Maven
+        run: mvn clean install -DskipTests=true
+      - name: run dev tests
+        run: mvn test -Dspring.profiles.active=dev
       # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
       #      - name: Update dependency graph
       #        uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
@@ -67,7 +68,7 @@ jobs:
           reporter: java-junit
           fail-on-error: true
       - name: aggregation-service JUnit Test Report #for analysis tests report
-        uses: dorny/test-reporter@v1.8.0 #{owner}/{repository}@{ref}
+        uses: dorny/test-reporter@v1.8.0 #{owner}/{repository}@{ref} https://github.com/marketplace/actions/test-reporter
         if: (success() || failure())
 #        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
