@@ -76,12 +76,12 @@ jobs:
           path: aggregation-service/target/surefire-reports/*.xml
           reporter: java-junit
           fail-on-error: true
-      - name: "docker compose down"
-        run: docker compose down
+#      - name: "docker compose down"
+#        run: docker compose down
 #      - name: "Wait for docker down"
 #        run: sleep 60 # wait until docker container down
       - name: "docker compose integration up"
-        run: docker compose -f docker-compose-integration.yml up -d --wait
+        run: docker compose -f docker-compose.yml up -d --wait
       - name: "run integration tests"
         run: mvn test -Dspring.profiles.active=integration-tests
       - name: converter-service integration Test Report
