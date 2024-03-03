@@ -76,7 +76,10 @@ class ConverterIntegrationTest {
     @ParameterizedTest()
     @MethodSource({"convertArgumentsProvider"})
     void convertTest(String input, String convertType, Integer expected) throws InterruptedException {
-        BigDecimal bigDecimal = restClient.post().uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input).retrieve().body(BigDecimal.class);
+        BigDecimal bigDecimal = restClient.post().uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType)
+                .body(input)
+                .retrieve()
+                .body(BigDecimal.class);
         Assertions.assertEquals(expected.intValue(), bigDecimal.intValue());
 //        sleep(7000);
         // TODO check in the output of aggregation service - the accumulation value by reading writer type
