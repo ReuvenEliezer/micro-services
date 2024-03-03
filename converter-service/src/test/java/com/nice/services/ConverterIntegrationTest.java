@@ -21,8 +21,8 @@ import org.springframework.web.client.RestClient;
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
-import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
+
 //@ActiveProfiles(profiles = "integration-tests") //https://stackoverflow.com/questions/44055969/in-spring-what-is-the-difference-between-profile-and-activeprofiles
 @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
 //@Disabled
@@ -33,6 +33,9 @@ class ConverterIntegrationTest {
     private static final Logger logger = LogManager.getLogger(ConverterIntegrationTest.class);
 
     private static final String localhost = "http://localhost:";
+
+    private static final String zipkinUrl = "http://zipkin-server:";
+
     private static final String stringType = "string";
     private static final String hexType = "hex";
     private static final String fractionType = "fraction";
@@ -49,9 +52,10 @@ class ConverterIntegrationTest {
 
     @Test
     void healthByZipkinTest() {
-        String res = restClient.get().uri(localhost + "9411/zipkin").retrieve().body(String.class);
+        String res = restClient.get().uri(zipkinUrl + "9411/zipkin").retrieve().body(String.class);
         assertThat(res).isNotNull();
     }
+
     @Test
     void callAggregateServiceTest() {
         logger.info("callAggregateServiceTest");
@@ -75,12 +79,12 @@ class ConverterIntegrationTest {
 
     @ParameterizedTest()
     @MethodSource({"convertArgumentsProvider"})
-    void convertTest(String input, String convertType, Integer expected) throws InterruptedException {
+    void convertTest(String input, String convertType, Integer expected) {
         BigDecimal bigDecimal = restClient.post().uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType)
                 .body(input)
                 .retrieve()
                 .body(BigDecimal.class);
-        Assertions.assertEquals(expected.intValue(), bigDecimal.intValue());
+        Assertions.assertEquals(expected.intValue(), bigDecimal.intValue(),0);
 //        sleep(7000);
         // TODO check in the output of aggregation service - the accumulation value by reading writer type
     }
