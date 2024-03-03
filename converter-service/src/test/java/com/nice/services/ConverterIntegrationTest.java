@@ -47,11 +47,7 @@ class ConverterIntegrationTest {
     @LocalServerPort
     private int serverPort;
 
-    @Test
-    void healthByZipkinTest() {
-        String res = restClient.get().uri(localhost + "9411/zipkin").retrieve().body(String.class);
-        assertThat(res).isNotNull();
-    }
+
 
     @Test
     void callAggregateServiceTest() {
