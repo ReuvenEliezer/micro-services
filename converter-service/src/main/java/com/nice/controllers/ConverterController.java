@@ -6,7 +6,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import java.io.IOException;
 import java.math.BigDecimal;
@@ -26,17 +26,17 @@ public class ConverterController {
     private final int aggServerPort;
 
     private final ConverterService converterService;
-    private final RestTemplate restTemplate;
+    private final RestClient restClient;
 
 
-    public ConverterController(ConverterService converterService, RestTemplate restTemplate,
+    public ConverterController(ConverterService converterService, RestClient restClient,
                                @Value("${aggregation.server.base-url}") String aggBaseUrl,
                                @Value("${aggregation.server.port}") int aggServerPort,
                                @Value("${spring.boot.admin.client.url}") String adminUrl
     ) {
         logger.info("ConverterController: adminUrl: {}", adminUrl);
         this.converterService = converterService;
-        this.restTemplate = restTemplate;
+        this.restClient = restClient;
         this.aggServerPort = aggServerPort;
         this.aggBaseUrl = aggBaseUrl;
     }
@@ -61,7 +61,10 @@ public class ConverterController {
     public BigDecimal getAggregateValue() {
         String fullUrl = aggBaseUrl + aggServerPort + "/aggregate/get-aggregate-value";
         logger.info("fullUrl: {}. runningInsideDocker: {}", fullUrl, IS_RUNNING_INSIDE_DOCKER);
-        return restTemplate.getForObject(fullUrl, BigDecimal.class);
+        return restClient.get()
+                .uri(fullUrl)
+                .retrieve()
+                .body(BigDecimal.class);
     }
 
     static {

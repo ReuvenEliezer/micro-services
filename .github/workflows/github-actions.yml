@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     #
     env:
-      COMPOSE_FILE: docker-compose.yml
+      COMPOSE_FILE: docker-compose-integration.yml
     steps:
       # This step uses the `actions/checkout` action to download a copy of your repository on the runner.
       - uses: actions/checkout@v4

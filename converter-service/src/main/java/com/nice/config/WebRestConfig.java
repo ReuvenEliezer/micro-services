@@ -6,17 +6,16 @@ package com.nice.config;
 //import brave.propagation.CurrentTraceContext;
 import io.micrometer.observation.ObservationRegistry;
 import io.micrometer.observation.aop.ObservedAspect;
-import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 @Configuration
 public class WebRestConfig {
 
     @Bean
-    public RestTemplate restTemplate(RestTemplateBuilder builder) {
-        return builder.build();
+    public RestClient restClient() {
+        return RestClient.create();
     }
 
     // tag::aspect[]
