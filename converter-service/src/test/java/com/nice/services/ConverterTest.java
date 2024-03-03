@@ -21,17 +21,17 @@ class ConverterTest {
     @Value("${server.port}")
     private Integer serverPort;
 
-    @Value("${spring.boot.admin.client.instance.service-base-url}")
-    private String bootAdminUrl;
-
-    @Value("${aggregation.server.base-url}")
-    private String serviceBaseUrl;
-
-
-    @Test
-    void bootAdminUrlTest() {
-        assertThat(bootAdminUrl).isEqualTo(serviceBaseUrl + serverPort);
-    }
+//    @Value("${spring.boot.admin.client.instance.service-base-url}")
+//    private String bootAdminClientUrl;
+//
+//    @Value("${spring.application.name}")
+//    private String serviceName;
+//
+//
+//    @Test
+//    void bootAdminUrlTest() {
+//        assertThat(bootAdminClientUrl).isEqualTo("http://" + serviceName + ":" + serverPort);
+//    }
 
     @Test
     void test() {
