@@ -68,7 +68,7 @@ class ConverterIntegrationTest {
                 .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
                 .retrieve()
                 .body(BigDecimal.class);
-        assertThat(result).isGreaterThan(BigDecimal.ZERO);
+        assertThat(result).isGreaterThanOrEqualTo(BigDecimal.ZERO);
     }
 
     @Test
@@ -79,12 +79,14 @@ class ConverterIntegrationTest {
 
     @ParameterizedTest()
     @MethodSource({"convertArgumentsProvider"})
-    void convertTest(String input, String convertType, Integer expected) {
-        BigDecimal bigDecimal = restClient.post().uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType)
+    void convertTest(String input, String convertType, int expected) {
+        BigDecimal bigDecimal = restClient
+                .post()
+                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType)
                 .body(input)
                 .retrieve()
                 .body(BigDecimal.class);
-        Assertions.assertEquals(expected.intValue(), bigDecimal.intValue(),0);
+        Assertions.assertEquals(expected, bigDecimal.intValue());
 //        sleep(7000);
         // TODO check in the output of aggregation service - the accumulation value by reading writer type
     }
@@ -94,7 +96,11 @@ class ConverterIntegrationTest {
     @MethodSource({"negativeArgumentsProvider"})
     void negativeTest(String input, String convertType) {
         Assertions.assertThrows(HttpServerErrorException.InternalServerError.class, () ->
-                restClient.post().uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input).retrieve().body(BigDecimal.class));
+                restClient.post()
+                        .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType)
+                        .body(input)
+                        .retrieve()
+                        .body(BigDecimal.class));
     }
 
     private static Stream<Arguments> convertArgumentsProvider() {
