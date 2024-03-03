@@ -33,9 +33,6 @@ class ConverterIntegrationTest {
     private static final Logger logger = LogManager.getLogger(ConverterIntegrationTest.class);
 
     private static final String localhost = "http://localhost:";
-
-    private static final String zipkinUrl = "http://zipkin-server:";
-
     private static final String stringType = "string";
     private static final String hexType = "hex";
     private static final String fractionType = "fraction";
@@ -52,7 +49,7 @@ class ConverterIntegrationTest {
 
     @Test
     void healthByZipkinTest() {
-        String res = restClient.get().uri(zipkinUrl + "9411/zipkin").retrieve().body(String.class);
+        String res = restClient.get().uri(localhost + "9411/zipkin").retrieve().body(String.class);
         assertThat(res).isNotNull();
     }
 
