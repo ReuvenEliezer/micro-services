@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.env.Environment;
@@ -47,6 +48,12 @@ class ConverterIntegrationTest {
     @LocalServerPort
     private int serverPort;
 
+    @Value("${aggregation.server.base-url}")
+    private String aggServiceBaseUrl;
+
+    @Value("${aggregation.server.port}")
+    private int aggServerPort;
+
     @Test
     void healthByZipkinTest() {
         String res = restTemplate.getForObject(localhost + "9411/zipkin", String.class);
@@ -59,7 +66,7 @@ class ConverterIntegrationTest {
         for (String activeProfile : activeProfiles) {
             logger.info("activeProfile: " + activeProfile);
         }
-        BigDecimal forObject = restTemplate.getForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service", BigDecimal.class);
+        BigDecimal forObject = restTemplate.getForObject(aggServiceBaseUrl + aggServerPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service", BigDecimal.class);
         assertThat(forObject).isGreaterThan(BigDecimal.ZERO);
     }
 
