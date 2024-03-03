@@ -1,6 +1,7 @@
 version: "3.9"
 services:
-  zipkin:
+  zipkin-server:
     image: openzipkin/zipkin
+    container_name: zipkin-server
     ports:
        - "9411:9411"

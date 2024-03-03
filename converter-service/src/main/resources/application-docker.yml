@@ -1,0 +1,10 @@
+spring:
+  boot:
+    admin:
+      client:
+        url: "http://admin-server:8080"
+        instance:
+          service-base-url: "http://${spring.application.name}:${server.port}"
+aggregation:
+  server:
+    base-url: "http://aggregation-service:"
