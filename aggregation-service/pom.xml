@@ -91,9 +91,9 @@
             </properties>
         </profile>
         <profile>
-            <id>integration-tests</id>
+            <id>docker</id>
             <properties>
-                <spring.profiles.active>integration-tests</spring.profiles.active>
+                <spring.profiles.active>docker</spring.profiles.active>
             </properties>
         </profile>
     </profiles>
@@ -106,7 +106,7 @@
                 <configuration>
                     <profiles>
                         <profile>dev</profile>
-                        <profile>integration-tests</profile>
+                        <profile>docker</profile>
                     </profiles>
                 </configuration>
             </plugin>

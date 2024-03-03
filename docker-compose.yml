@@ -1,7 +1,35 @@
 version: "3.9"
 services:
-  zipkin:
+  zipkin-server:
     image: openzipkin/zipkin
     container_name: zipkin-server
     ports:
       - "9411:9411"
+  admin-server:
+    build:
+      context: admin
+      dockerfile: Dockerfile
+    image: admin-server:latest
+    ports:
+      - "8080:8080"
+  converter-service:
+    build:
+      context: converter-service
+      dockerfile: Dockerfile
+    image: converter-server:latest
+    depends_on:
+      - zipkin-server
+      - admin-server
+    ports:
+      - "9091:9091"
+  aggregation-service:
+    build:
+      context: aggregation-service
+      dockerfile: Dockerfile
+    image: aggregation-server:latest
+    depends_on:
+      - zipkin-server
+      - admin-server
+      - converter-service
+    ports:
+      - "8081:8081" # for scaling-services https://www.baeldung.com/dockerizing-spring-boot-application#3-scaling-services
