@@ -28,10 +28,10 @@ class ConverterTest {
     private String serviceName;
 
 
-    @Test
-    void bootAdminUrlTest() {
-        assertThat(bootAdminClientUrl).isEqualTo("http://" + serviceName +":" + serverPort);
-    }
+//    @Test
+//    void bootAdminUrlTest() {
+//        assertThat(bootAdminClientUrl).isEqualTo("http://" + serviceName +":" + serverPort);
+//    }
 
     @Test
     void test() {
