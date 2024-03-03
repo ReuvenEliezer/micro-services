@@ -16,7 +16,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import java.math.BigDecimal;
 import java.util.stream.Stream;
@@ -38,7 +38,7 @@ class ConverterIntegrationTest {
     private static final String fractionType = "fraction";
 
     @Autowired
-    private RestTemplate restTemplate;
+    private RestClient restClient;
 
     @Autowired
     private Environment environment;
@@ -49,7 +49,7 @@ class ConverterIntegrationTest {
 
     @Test
     void healthByZipkinTest() {
-        String res = restTemplate.getForObject(localhost + "9411/zipkin", String.class);
+        String res = restClient.get().uri(localhost + "9411/zipkin").retrieve().body(String.class);
         assertThat(res).isNotNull();
     }
     @Test
@@ -59,20 +59,24 @@ class ConverterIntegrationTest {
         for (String activeProfile : activeProfiles) {
             logger.info("activeProfile: " + activeProfile);
         }
-        BigDecimal forObject = restTemplate.getForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service", BigDecimal.class);
-        assertThat(forObject).isGreaterThan(BigDecimal.ZERO);
+        BigDecimal result = restClient
+                .get()
+                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
+                .retrieve()
+                .body(BigDecimal.class);
+        assertThat(result).isGreaterThan(BigDecimal.ZERO);
     }
 
     @Test
     void healthByActuatorTest() {
-        String res = restTemplate.getForObject(localhost + serverPort + "/actuator/health", String.class);
+        String res = restClient.get().uri(localhost + serverPort + "/actuator/health").retrieve().body(String.class);
         assertThat(res).isEqualTo("{\"status\":\"UP\"}");
     }
 
     @ParameterizedTest()
     @MethodSource({"convertArgumentsProvider"})
     void convertTest(String input, String convertType, Integer expected) throws InterruptedException {
-        BigDecimal bigDecimal = restTemplate.postForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input, BigDecimal.class);
+        BigDecimal bigDecimal = restClient.post().uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input).retrieve().body(BigDecimal.class);
         Assertions.assertEquals(expected.intValue(), bigDecimal.intValue());
 //        sleep(7000);
         // TODO check in the output of aggregation service - the accumulation value by reading writer type
@@ -83,7 +87,7 @@ class ConverterIntegrationTest {
     @MethodSource({"negativeArgumentsProvider"})
     void negativeTest(String input, String convertType) {
         Assertions.assertThrows(HttpServerErrorException.InternalServerError.class, () ->
-                restTemplate.postForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input, BigDecimal.class));
+                restClient.post().uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input).retrieve().body(BigDecimal.class));
     }
 
     private static Stream<Arguments> convertArgumentsProvider() {
