@@ -42,6 +42,7 @@ management:
 
 aggregation:
   server:
+    base-url: "http://localhost:"
     port: 8081
   url: /aggregate/
 scheduler:

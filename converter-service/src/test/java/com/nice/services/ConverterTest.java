@@ -24,13 +24,17 @@ class ConverterTest {
     @Value("${spring.boot.admin.client.instance.service-base-url}")
     private String bootAdminUrl;
 
+    @Value("${aggregation.server.base-url}")
+    private String serviceBaseUrl;
+
+
     @Test
     void bootAdminUrlTest() {
-        assertThat(bootAdminUrl).isEqualTo("http://localhost:" + serverPort);
+        assertThat(bootAdminUrl).isEqualTo(serviceBaseUrl + serverPort);
     }
 
     @Test
-    void test(){
+    void test() {
         queueService.put(new BigDecimal(1));
 //        Assert.assertEquals();
     }

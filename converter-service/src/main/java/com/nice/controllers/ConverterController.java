@@ -19,24 +19,26 @@ import java.util.stream.Stream;
 public class ConverterController {
 
     private static final Logger logger = LogManager.getLogger(ConverterController.class);
-    private static final String LOCAL_HOST = "http://localhost:";
 
-    private static final boolean IS_RUNNING_INSIDE_DOCKER = isRunningInsideDocker();
+    private static final boolean IS_RUNNING_INSIDE_DOCKER;
 
-    private final int AGG_SERVER_PORT;
+    private final String aggBaseUrl;
+    private final int aggServerPort;
 
     private final ConverterService converterService;
     private final RestTemplate restTemplate;
 
 
     public ConverterController(ConverterService converterService, RestTemplate restTemplate,
+                               @Value("${aggregation.server.base-url}") String aggBaseUrl,
                                @Value("${aggregation.server.port}") int aggServerPort,
                                @Value("${spring.boot.admin.client.url}") String adminUrl
     ) {
         logger.info("ConverterController: adminUrl: {}", adminUrl);
         this.converterService = converterService;
         this.restTemplate = restTemplate;
-        this.AGG_SERVER_PORT = aggServerPort;
+        this.aggServerPort = aggServerPort;
+        this.aggBaseUrl = aggBaseUrl;
     }
 
 
@@ -57,17 +59,19 @@ public class ConverterController {
 
     @GetMapping(value = "call-aggregate-service")
     public BigDecimal getAggregateValue() {
-        logger.info("call-aggregate-service: getAggregateValue runningInsideDocker: {}", IS_RUNNING_INSIDE_DOCKER);
-        String baseUrl = IS_RUNNING_INSIDE_DOCKER ? "http://aggregation-service:" : LOCAL_HOST;
-        return restTemplate.getForObject(baseUrl + AGG_SERVER_PORT + "/aggregate/get-aggregate-value", BigDecimal.class);
+        String fullUrl = aggBaseUrl + aggServerPort + "/aggregate/get-aggregate-value";
+        logger.info("fullUrl: {}. runningInsideDocker: {}", fullUrl, IS_RUNNING_INSIDE_DOCKER);
+        return restTemplate.getForObject(fullUrl, BigDecimal.class);
     }
 
-    static Boolean isRunningInsideDocker() {
+    static {
+        boolean isRunningInsideDocker1;
         try (Stream<String> stream = Files.lines(Paths.get("/proc/1/cgroup"))) {
-            return stream.anyMatch(line -> line.contains("/docker"));
+            isRunningInsideDocker1 = stream.anyMatch(line -> line.contains("/docker"));
         } catch (IOException e) {
-            return false;
+            isRunningInsideDocker1 = false;
         }
+        IS_RUNNING_INSIDE_DOCKER = isRunningInsideDocker1;
     }
 
 }
