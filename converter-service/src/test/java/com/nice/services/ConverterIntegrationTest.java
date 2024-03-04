@@ -10,6 +10,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.server.LocalServerPort;
 import org.springframework.core.env.Environment;
@@ -19,6 +20,7 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -43,10 +45,20 @@ class ConverterIntegrationTest {
     @Autowired
     private Environment environment;
 
+    @Value("${spring.application.name}")
+    private String appName;
+
     //    @Value("${server.port}")
     @LocalServerPort
     private int serverPort;
 
+    @Test
+    void zipkinTest() {
+        String[] res = restClient.get().uri(localhost + "9411/zipkin/api/v2/services").retrieve().body(String[].class);
+        logger.info("zipkin services: '{}'", Arrays.toString(res));
+        assertThat(res).isNotEmpty();
+        assertThat(res).contains(appName);
+    }
 
     @Test
     void callAggregateServiceTest() {

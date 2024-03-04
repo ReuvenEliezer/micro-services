@@ -4,7 +4,7 @@ services:
     image: openzipkin/zipkin
     container_name: zipkin-server
     ports:
-       - "9411:9411"
+      - "9411:9411"
   admin-server:
     build:
       context: admin
