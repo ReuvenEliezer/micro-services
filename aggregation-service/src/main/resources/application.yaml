@@ -39,3 +39,9 @@ management:
         http:
           server:
             requests: true
+springdoc:
+  version: '@springdoc.version@'
+  api-docs:
+    version: openapi_3_1
+  swagger-ui:
+    use-root-path: true
