@@ -48,8 +48,8 @@ class ConverterIntegrationTest {
     @Value("${spring.application.name}")
     private String appName;
 
-    //    @Value("${server.port}")
-    @LocalServerPort
+    @Value("${server.port}")
+//    @LocalServerPort
     private int serverPort;
 
     @Test
@@ -73,6 +73,30 @@ class ConverterIntegrationTest {
                 .retrieve()
                 .body(BigDecimal.class);
         assertThat(result).isGreaterThanOrEqualTo(BigDecimal.ZERO);
+    }
+
+
+    @Test
+    void callAggregateServiceWithValueTest() {
+        logger.info("callAggregateServiceWithValueTest");
+        String[] activeProfiles = environment.getActiveProfiles();
+        for (String activeProfile : activeProfiles) {
+            logger.info("activeProfile: " + activeProfile);
+        }
+
+        int value = 5;
+        restClient
+                .get()
+                .uri(localhost + serverPort + "/aggregate/" + value)
+                .retrieve()
+                .body(Void.class);
+
+        BigDecimal result = restClient
+                .get()
+                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
+                .retrieve()
+                .body(BigDecimal.class);
+        assertThat(result).isGreaterThanOrEqualTo(BigDecimal.valueOf(value));
     }
 
     @Test
