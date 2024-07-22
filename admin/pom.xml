@@ -16,7 +16,7 @@
     <description>admin</description>
 
     <properties>
-        <spring-boot-admin.version>3.3.2</spring-boot-admin.version>
+        <spring-boot-admin.version>3.3.3</spring-boot-admin.version>
     </properties>
 
     <dependencies>
