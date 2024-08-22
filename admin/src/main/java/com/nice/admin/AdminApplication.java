@@ -7,7 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @EnableAdminServer
 @SpringBootApplication
 public class AdminApplication {
-    //http://localhost:8080/applications
+
     public static void main(String[] args) {
         SpringApplication.run(AdminApplication.class, args);
     }

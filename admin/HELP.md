@@ -1,6 +1,7 @@
 # Getting Started
 
 ### Reference Documentation
+http://localhost:8085/applications
 
 For further reference, please consider the following sections:
 
