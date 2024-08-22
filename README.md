@@ -29,3 +29,8 @@
 - If any tests fail, the build will also fail.
 - View test results under "Actions" in the GitHub repository:
   https://github.com/ReuvenEliezer/NiceMicroServices/actions
+
+http://localhost:9411/zipkin/
+http://eureka-server:8761/
+http://localhost:8761/
+docker-compose up --scale aggregation-service=3

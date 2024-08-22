@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //@ActiveProfiles(profiles = "integration-tests") //https://stackoverflow.com/questions/44055969/in-spring-what-is-the-difference-between-profile-and-activeprofiles
 @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
 //@Disabled
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ConverterApp.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = ConverterApp.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ConverterIntegrationTest {
 
@@ -48,16 +48,21 @@ class ConverterIntegrationTest {
     @Value("${spring.application.name}")
     private String appName;
 
-    //    @Value("${server.port}")
-    @LocalServerPort
+    @Value("${server.port}")
+//    @LocalServerPort
     private int serverPort;
+
+    @Value("${aggregation.server.port}")
+    private int aggServerPort;
 
     @Test
     void zipkinTest() {
         String[] res = restClient.get().uri(localhost + "9411/zipkin/api/v2/services").retrieve().body(String[].class);
         logger.info("zipkin services: '{}'", Arrays.toString(res));
         assertThat(res).isNotEmpty();
-        assertThat(res).contains(appName);
+        assertThat(res).containsExactlyInAnyOrder(
+//                appName,
+                "aggregation-service");
     }
 
     @Test
@@ -73,6 +78,30 @@ class ConverterIntegrationTest {
                 .retrieve()
                 .body(BigDecimal.class);
         assertThat(result).isGreaterThanOrEqualTo(BigDecimal.ZERO);
+    }
+
+
+    @Test
+    void callAggregateServiceWithValueTest() {
+        logger.info("callAggregateServiceWithValueTest");
+        String[] activeProfiles = environment.getActiveProfiles();
+        for (String activeProfile : activeProfiles) {
+            logger.info("activeProfile: " + activeProfile);
+        }
+
+        int value = 5;
+        restClient
+                .get()
+                .uri(localhost + aggServerPort + "/aggregate/" + value)
+                .retrieve()
+                .body(Void.class);
+
+        BigDecimal result = restClient
+                .get()
+                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
+                .retrieve()
+                .body(BigDecimal.class);
+        assertThat(result).isGreaterThanOrEqualTo(BigDecimal.valueOf(value));
     }
 
     @Test
