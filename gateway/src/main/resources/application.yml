@@ -2,7 +2,7 @@ server:
   port: 8080
 spring:
   application:
-    name: api-gateway
+    name: gateway
   cloud:
     gateway:
       routes:
@@ -13,7 +13,7 @@ spring:
         - id: aggregation-route
           uri: lb://aggregation-service
           predicates:
-            - Path=/aggregation/**
+            - Path=/aggregate/**
 
 eureka:
   client:
@@ -22,4 +22,4 @@ eureka:
 
 logging:
   level:
-    org.springframework.cloud.gateway: DEBUG  # אופציונלי: כדי לראות לוגים של Gateway
+    org.springframework.cloud.gateway: DEBUG
