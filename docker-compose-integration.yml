@@ -47,5 +47,27 @@ services:
     environment:
       - "SPRING_PROFILES_ACTIVE=docker"
       - "MANAGEMENT.ZIPKIN.TRACING.ENDPOINT=http://zipkin-server:9411/api/v2/spans"
+  eureka-server:
+    build:
+      context: eureka-server
+      dockerfile: Dockerfile
+    image: eureka-server:latest
+    ports:
+      - "8761:8761"
+    networks:
+      - my-network
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+  gateway:
+    build:
+      context: gateway
+      dockerfile: Dockerfile
+    image: gateway:latest
+    ports:
+      - "8080:8080"
+    networks:
+      - my-network
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
 networks:
   my-network:
