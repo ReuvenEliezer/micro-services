@@ -25,10 +25,10 @@ jobs:
       COMPOSE_FILE: docker-compose-integration.yml
     steps:
       # This step uses the `actions/checkout` action to download a copy of your repository on the runner.
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4.1.7
       # This step uses the `actions/setup-java` action to configure the Eclipse Temurin (Java) 17 JDK by Eclipse Adoptium.
       - name: Set up JDK 17
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v4.2.2
         with:
           java-version: '17'
           distribution: 'corretto'
