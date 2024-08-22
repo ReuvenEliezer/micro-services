@@ -60,7 +60,7 @@ class ConverterIntegrationTest {
         String[] res = restClient.get().uri(localhost + "9411/zipkin/api/v2/services").retrieve().body(String[].class);
         logger.info("zipkin services: '{}'", Arrays.toString(res));
         assertThat(res).isNotEmpty();
-        assertThat(res).contains(appName);
+        assertThat(res).containsExactlyInAnyOrder(appName, "aggregation-service");
     }
 
     @Test

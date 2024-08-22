@@ -16,23 +16,23 @@ services:
       - "8085:8085"
     networks:
       - my-network
-#  converter-service:
-#    build:
-#      context: converter-service
-#      dockerfile: Dockerfile
-#    image: converter-server:latest
-#    depends_on:
-#      - zipkin-server
-#      - admin-server
-#      - gateway
-#      - eureka-server
-#    ports:
-#      - "9091:9091"
-#    networks:
-#      - my-network
-#    environment:
-#      - "SPRING_PROFILES_ACTIVE=docker"
-#      - "MANAGEMENT.ZIPKIN.TRACING.ENDPOINT=http://zipkin-server:9411/api/v2/spans"
+  converter-service:
+    build:
+      context: converter-service
+      dockerfile: Dockerfile
+    image: converter-server:latest
+    depends_on:
+      - zipkin-server
+      - admin-server
+      - gateway
+      - eureka-server
+    ports:
+      - "9091:9091"
+    networks:
+      - my-network
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+      - "MANAGEMENT.ZIPKIN.TRACING.ENDPOINT=http://zipkin-server:9411/api/v2/spans"
   aggregation-service:
     build:
       context: aggregation-service
