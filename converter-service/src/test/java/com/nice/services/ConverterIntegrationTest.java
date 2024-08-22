@@ -26,7 +26,7 @@ import java.util.stream.Stream;
 import static org.assertj.core.api.Assertions.assertThat;
 
 //@ActiveProfiles(profiles = "integration-tests") //https://stackoverflow.com/questions/44055969/in-spring-what-is-the-difference-between-profile-and-activeprofiles
-@EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
+//@EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
 //@Disabled
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = ConverterApp.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
@@ -51,6 +51,9 @@ class ConverterIntegrationTest {
     @Value("${server.port}")
 //    @LocalServerPort
     private int serverPort;
+
+    @Value("${aggregation.server.port}")
+    private int aggServerPort;
 
     @Test
     void zipkinTest() {
@@ -87,7 +90,7 @@ class ConverterIntegrationTest {
         int value = 5;
         restClient
                 .get()
-                .uri(localhost + serverPort + "/aggregate/" + value)
+                .uri(localhost + aggServerPort + "/aggregate/" + value)
                 .retrieve()
                 .body(Void.class);
 
