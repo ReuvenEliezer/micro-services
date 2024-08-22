@@ -28,7 +28,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 //@ActiveProfiles(profiles = "integration-tests") //https://stackoverflow.com/questions/44055969/in-spring-what-is-the-difference-between-profile-and-activeprofiles
 @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
 //@Disabled
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ConverterApp.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = ConverterApp.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ConverterIntegrationTest {
 
@@ -48,8 +48,8 @@ class ConverterIntegrationTest {
     @Value("${spring.application.name}")
     private String appName;
 
-//    @Value("${server.port}")
-    @LocalServerPort
+    @Value("${server.port}")
+//    @LocalServerPort
     private int serverPort;
 
     @Test
