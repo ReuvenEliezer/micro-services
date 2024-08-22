@@ -24,6 +24,8 @@ services:
     depends_on:
       - zipkin-server
       - admin-server
+      - gateway
+      - eureka-server
     ports:
       - "9091:9091"
     networks:
@@ -39,6 +41,8 @@ services:
     depends_on:
       - zipkin-server
       - admin-server
+      - gateway
+      - eureka-server
       - converter-service
     ports:
       - "8081:8081" # for scaling-services https://www.baeldung.com/dockerizing-spring-boot-application#3-scaling-services
