@@ -1,5 +1,13 @@
 server:
-  port: 9091
+  port: 9091 #0
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
 spring:
   profiles:
     active: '@spring.profiles.active@'
@@ -9,9 +17,11 @@ spring:
   boot:
     admin:
       client:
-        url: "http://localhost:8080"
+        url: "http://localhost:8085"
         instance:
           service-base-url: "http://localhost:${server.port}"
+#          prefer-ip: true
+#          service-base-url: "http://${spring.application.name}" #For docker
 #          metadata:
 #            user:
 #              name: ${spring.security.user.name}
@@ -47,4 +57,9 @@ aggregation:
   url: /aggregate/
 scheduler:
   sendEveryPeriodTimeInMillis: 5000
-
+springdoc:
+  version: '@springdoc.version@'
+  api-docs:
+    version: openapi_3_1
+  swagger-ui:
+    use-root-path: true

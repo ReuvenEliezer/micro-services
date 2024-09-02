@@ -1,5 +1,13 @@
 server:
   port: 8081
+eureka:
+  client:
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    preferIpAddress: true
 writer-class-name: ConsoleWriter
 
 spring:
@@ -9,7 +17,7 @@ spring:
   boot:
     admin:
       client:
-        url: "http://localhost:8080"
+        url: "http://localhost:8085"
         instance:
           service-base-url: "http://localhost:${server.port}"
 #          metadata:
@@ -39,3 +47,9 @@ management:
         http:
           server:
             requests: true
+springdoc:
+  version: '@springdoc.version@'
+  api-docs:
+    version: openapi_3_1
+  swagger-ui:
+    use-root-path: true

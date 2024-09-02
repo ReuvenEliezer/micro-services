@@ -4,7 +4,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import java.math.BigDecimal;
 import java.util.concurrent.BlockingDeque;
@@ -16,14 +16,14 @@ public class QueueServiceImpl implements QueueService {
     private static final Logger logger = LogManager.getLogger(QueueServiceImpl.class);
     private static final BlockingDeque<BigDecimal> blockingDeque = new LinkedBlockingDeque<>();
     private static final String LOCAL_HOST = "http://localhost:";
-    private final RestTemplate restTemplate;
+    private final RestClient restClient;
     private final Integer aggServerPort;
     private final String aggUrl;
 
-    public QueueServiceImpl(RestTemplate restTemplate,
+    public QueueServiceImpl(RestClient restClient,
                             @Value("${aggregation.server.port}") Integer aggServerPort,
                             @Value("${aggregation.url}") String aggUrl) {
-        this.restTemplate = restTemplate;
+        this.restClient = restClient;
         this.aggServerPort = aggServerPort;
         this.aggUrl = aggUrl;
     }
@@ -36,7 +36,11 @@ public class QueueServiceImpl implements QueueService {
             logger.info("sendAll queue values to aggregation service");
             BigDecimal value = blockingDeque.poll();
             try {
-                restTemplate.getForObject(LOCAL_HOST + aggServerPort + aggUrl + value, Void.class);
+                restClient.get()
+                        .uri(LOCAL_HOST + aggServerPort + aggUrl + value)
+//                        .retrieve()
+//                        .body(Void.class)
+                        ;
             } catch (Exception e) {
                 logger.error("failed to sent value '{}' to aggregation server", value, e);
             }

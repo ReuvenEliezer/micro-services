@@ -1,6 +1,21 @@
 server:
-  port: 8080
+  port: 8085
+eureka:
+  client:
+    registryFetchIntervalSeconds: 5
+    registerWithEureka: true
+    fetchRegistry: true
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
+  instance:
+    hostname: localhost
 spring:
+  boot:
+    admin:
+      discovery:
+        ignored-services: eureka-server
+        enabled: true
+#        services: http://eureka:8761/eureka/
   application:
     name: @project.artifactId@
     version: @project.version@
@@ -30,3 +45,9 @@ management:
   endpoint:
     health:
       show-details: always
+springdoc:
+  version: '@springdoc.version@'
+  api-docs:
+    version: openapi_3_1
+  swagger-ui:
+    use-root-path: true

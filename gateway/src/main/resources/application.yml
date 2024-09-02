@@ -1,0 +1,25 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      routes:
+        - id: converter-route
+          uri: lb://converter-service # route according to register in Eureka Server
+          predicates:
+            - Path=/convert/**
+        - id: aggregation-route
+          uri: lb://aggregation-service
+          predicates:
+            - Path=/aggregate/**
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka/
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG

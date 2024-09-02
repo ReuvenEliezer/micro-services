@@ -17,17 +17,18 @@ import org.springframework.core.env.Environment;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.EnabledIf;
 import org.springframework.web.client.HttpServerErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestClient;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.stream.Stream;
 
-import static java.lang.Thread.sleep;
 import static org.assertj.core.api.Assertions.assertThat;
-//@ActiveProfiles(profiles = "docker") //https://stackoverflow.com/questions/44055969/in-spring-what-is-the-difference-between-profile-and-activeprofiles
-@EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'docker'}", loadContext = true)
+
+//@ActiveProfiles(profiles = "integration-tests") //https://stackoverflow.com/questions/44055969/in-spring-what-is-the-difference-between-profile-and-activeprofiles
+@EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
 //@Disabled
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT, classes = ConverterApp.class)
+@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT, classes = ConverterApp.class)
 @DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ConverterIntegrationTest {
 
@@ -39,26 +40,31 @@ class ConverterIntegrationTest {
     private static final String fractionType = "fraction";
 
     @Autowired
-    private RestTemplate restTemplate;
+    private RestClient restClient;
 
     @Autowired
     private Environment environment;
 
-    //    @Value("${server.port}")
-    @LocalServerPort
-    private int serverPort;
+    @Value("${spring.application.name}")
+    private String appName;
 
-    @Value("${aggregation.server.base-url}")
-    private String aggServiceBaseUrl;
+    @Value("${server.port}")
+//    @LocalServerPort
+    private int serverPort;
 
     @Value("${aggregation.server.port}")
     private int aggServerPort;
 
     @Test
-    void healthByZipkinTest() {
-        String res = restTemplate.getForObject(localhost + "9411/zipkin", String.class);
-        assertThat(res).isNotNull();
+    void zipkinTest() {
+        String[] res = restClient.get().uri(localhost + "9411/zipkin/api/v2/services").retrieve().body(String[].class);
+        logger.info("zipkin services: '{}'", Arrays.toString(res));
+        assertThat(res).isNotEmpty();
+        assertThat(res).containsExactlyInAnyOrder(
+//                appName,
+                "aggregation-service");
     }
+
     @Test
     void callAggregateServiceTest() {
         logger.info("callAggregateServiceTest");
@@ -66,52 +72,89 @@ class ConverterIntegrationTest {
         for (String activeProfile : activeProfiles) {
             logger.info("activeProfile: " + activeProfile);
         }
-        BigDecimal forObject = restTemplate.getForObject(aggServiceBaseUrl + aggServerPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service", BigDecimal.class);
-        assertThat(forObject).isGreaterThan(BigDecimal.ZERO);
+        BigDecimal result = restClient
+                .get()
+                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
+                .retrieve()
+                .body(BigDecimal.class);
+        assertThat(result).isGreaterThanOrEqualTo(BigDecimal.ZERO);
+    }
+
+
+    @Test
+    void callAggregateServiceWithValueTest() {
+        logger.info("callAggregateServiceWithValueTest");
+        String[] activeProfiles = environment.getActiveProfiles();
+        for (String activeProfile : activeProfiles) {
+            logger.info("activeProfile: " + activeProfile);
+        }
+
+        int value = 5;
+        restClient
+                .get()
+                .uri(localhost + aggServerPort + "/aggregate/" + value)
+                .retrieve()
+                .body(Void.class);
+
+        BigDecimal result = restClient
+                .get()
+                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
+                .retrieve()
+                .body(BigDecimal.class);
+        assertThat(result).isGreaterThanOrEqualTo(BigDecimal.valueOf(value));
     }
 
     @Test
     void healthByActuatorTest() {
-        String res = restTemplate.getForObject(localhost + serverPort + "/actuator/health", String.class);
+        String res = restClient.get().uri(localhost + serverPort + "/actuator/health").retrieve().body(String.class);
         assertThat(res).isEqualTo("{\"status\":\"UP\"}");
     }
 
-//    @ParameterizedTest()
-//    @MethodSource({"convertArgumentsProvider"})
-//    void convertTest(String input, String convertType, Integer expected) throws InterruptedException {
-//        BigDecimal bigDecimal = restTemplate.postForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input, BigDecimal.class);
-//        Assertions.assertEquals(expected.intValue(), bigDecimal.intValue());
+    @ParameterizedTest()
+    @MethodSource({"convertArgumentsProvider"})
+    void convertTest(String input, String convertType, int expected) {
+        BigDecimal bigDecimal = restClient
+                .post()
+                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType)
+                .body(input)
+                .retrieve()
+                .body(BigDecimal.class);
+        Assertions.assertEquals(expected, bigDecimal.intValue());
 //        sleep(7000);
-//        // TODO check in the output of aggregation service - the accumulation value by reading writer type
-//    }
-//
-//
-//    @ParameterizedTest()
-//    @MethodSource({"negativeArgumentsProvider"})
-//    void negativeTest(String input, String convertType) {
-//        Assertions.assertThrows(HttpServerErrorException.InternalServerError.class, () ->
-//                restTemplate.postForObject(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType, input, BigDecimal.class));
-//    }
+        // TODO check in the output of aggregation service - the accumulation value by reading writer type
+    }
 
-//    private static Stream<Arguments> convertArgumentsProvider() {
-//        return Stream.of(
-//                Arguments.of("F", hexType, 15),
-//                Arguments.of("abc", stringType, 294),
-//                Arguments.of("6/3", fractionType, 2)
-//        );
-//    }
-//
-//    private static Stream<Arguments> negativeArgumentsProvider() {
-//        return Stream.of(
-//                Arguments.of("-3/6", fractionType),
-//                Arguments.of("0/1", fractionType),
-//                Arguments.of("3/0", fractionType),
-//                Arguments.of("$", hexType),
-//                Arguments.of("3", stringType),
-//                Arguments.of("a", fractionType),
-//                Arguments.of("12/1/1", fractionType)
-//        );
-//    }
+
+    @ParameterizedTest()
+    @MethodSource({"negativeArgumentsProvider"})
+    void negativeTest(String input, String convertType) {
+        Assertions.assertThrows(HttpServerErrorException.InternalServerError.class, () ->
+                restClient.post()
+                        .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType)
+                        .body(input)
+                        .retrieve()
+                        .body(BigDecimal.class));
+    }
+
+    private static Stream<Arguments> convertArgumentsProvider() {
+        return Stream.of(
+                Arguments.of("F", hexType, 15),
+                Arguments.of("abc", stringType, 294),
+                Arguments.of("6/3", fractionType, 2)
+        );
+    }
+
+    private static Stream<Arguments> negativeArgumentsProvider() {
+        return Stream.of(
+                Arguments.of("-3/6", fractionType),
+                Arguments.of("0/1", fractionType),
+                Arguments.of("3/0", fractionType),
+                Arguments.of("$", hexType),
+                Arguments.of("3", stringType),
+                Arguments.of("a", fractionType),
+                Arguments.of("12/1/1", fractionType)
+        );
+    }
 
 
 }
