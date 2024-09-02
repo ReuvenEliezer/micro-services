@@ -18,9 +18,19 @@
   curl -X 'GET' \
   'http://localhost:9091/convert/call-aggregate-service' \
   -H 'accept: */*'
-  
+  ```
+  Via Eureka server (port 8080):
+  ```bash
+  curl -X 'GET' \
+  'http://localhost:8080/convert/call-aggregate-service' \
+  -H 'accept: */*'
+  ```
+
 ## Aggregation Controller
 - swagger http://localhost:8081/swagger-ui/index.html#/
+
+## admin service
+- http://localhost:8085/applications
 
 ## Dependabot
 - to auto create a PR for upgrade all dependencies (including the parent) and Docker image are up-to-date.
