@@ -19,7 +19,8 @@ spring:
       client:
         url: "http://localhost:8085"
         instance:
-          service-base-url: "http://localhost:${server.port}"
+          service-base-url: "http://${spring.application.name}:${server.port}"
+#          service-base-url: "http://localhost:${server.port}"
 #          metadata:
 #            user:
 #              name: ${spring.security.user.name}

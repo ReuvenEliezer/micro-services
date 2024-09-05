@@ -12,45 +12,53 @@ services:
       context: admin
       dockerfile: Dockerfile
     image: admin-server:latest
+    environment:
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
     ports:
       - "8085:8085"
     networks:
       - my-network
-#  converter-service:
-#    build:
-#      context: converter-service
-#      dockerfile: Dockerfile
-#    image: converter-server:latest
-#    depends_on:
-#      - zipkin-server
-#      - admin-server
-#      - gateway
-#      - eureka-server
-#    ports:
-#      - "9091:9091"
-#    networks:
-#      - my-network
-#    environment:
-#      - "SPRING_PROFILES_ACTIVE=docker"
-#      - "MANAGEMENT.ZIPKIN.TRACING.ENDPOINT=http://zipkin-server:9411/api/v2/spans"
-  aggregation-service:
+  converter-service:
     build:
-      context: aggregation-service
+      context: converter-service
       dockerfile: Dockerfile
-    image: aggregation-server:latest
+    image: converter-server:latest
+    deploy:
+      replicas: 2
     depends_on:
       - zipkin-server
       - admin-server
       - gateway
       - eureka-server
-#      - converter-service
     ports:
-      - "8081:8081" # for scaling-services https://www.baeldung.com/dockerizing-spring-boot-application#3-scaling-services
+      - "19091-19092:9091"
     networks:
       - my-network
     environment:
       - "SPRING_PROFILES_ACTIVE=docker"
       - "MANAGEMENT.ZIPKIN.TRACING.ENDPOINT=http://zipkin-server:9411/api/v2/spans"
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
+  aggregation-service:
+    build:
+      context: aggregation-service
+      dockerfile: Dockerfile
+    image: aggregation-server:latest
+    deploy:
+      replicas: 2
+    depends_on:
+      - zipkin-server
+      - admin-server
+      - gateway
+      - eureka-server
+      - converter-service
+    ports:
+      - "18081-18082:8081" # for scaling-services https://www.baeldung.com/dockerizing-spring-boot-application#3-scaling-services
+    networks:
+      - my-network
+    environment:
+      - "SPRING_PROFILES_ACTIVE=docker"
+      - "MANAGEMENT.ZIPKIN.TRACING.ENDPOINT=http://zipkin-server:9411/api/v2/spans"
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
   eureka-server:
     build:
       context: eureka-server
@@ -73,5 +81,7 @@ services:
       - my-network
     environment:
       - "SPRING_PROFILES_ACTIVE=docker"
+      - eureka.client.service-url.defaultZone=http://eureka-server:8761/eureka
 networks:
   my-network:
+    driver: bridge
