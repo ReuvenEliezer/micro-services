@@ -26,7 +26,7 @@ class ConverterTest {
 
     @Test
     void bootAdminUrlTest() {
-        assertThat(bootAdminUrl).isEqualTo("http://localhost:" + serverPort);
+        assertThat(bootAdminUrl).isEqualTo("http://convert-service:" + serverPort);
     }
 
     @Test
