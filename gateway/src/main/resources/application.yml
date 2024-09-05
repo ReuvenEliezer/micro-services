@@ -14,7 +14,21 @@ spring:
           uri: lb://aggregation-service
           predicates:
             - Path=/aggregate/**
-
+  boot:
+    admin:
+      client:
+        url: http://localhost:8085
+        instance:
+          service-base-url: http://localhost:${server.port}  # הכתובת של ה-Gateway כפי שה-Admin Server ייגש אליו
+#          name: gateway  # השם שיופיע ב-Spring Boot Admin
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # only for testing purpose, switch back to 0.1 for production code
+  endpoints:
+    web:
+      exposure:
+        include: "*"
 eureka:
   client:
     serviceUrl:

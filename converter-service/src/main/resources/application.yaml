@@ -19,8 +19,9 @@ spring:
       client:
         url: "http://localhost:8085"
         instance:
-#          service-base-url: "http://localhost:${server.port}"
-          service-base-url: "http://${spring.application.name}:${server.port}"
+          service-base-url: "http://localhost:${server.port}"
+#          service-base-url: "http://${spring.application.name}:${server.port}"
+#          service-base-url: "http://converter-service:8080"
 #          prefer-ip: true
 #          service-base-url: "http://${spring.application.name}" #For docker
 #          metadata:
