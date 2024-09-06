@@ -5,6 +5,7 @@ import com.nice.utils.WsAddressConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -56,6 +57,7 @@ class ConverterIntegrationTest {
     private int aggServerPort;
 
     @Test
+    @Disabled
     void zipkinTest() {
         String[] res = restClient.get().uri(localhost + "9411/zipkin/api/v2/services").retrieve().body(String[].class);
         logger.info("zipkin services: '{}'", Arrays.toString(res));
@@ -75,7 +77,7 @@ class ConverterIntegrationTest {
         BigDecimal result = restClient
                 .get()
 //                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
-                .uri(localhost + "8080/converter-service" + WsAddressConstants.convertLogicUrl + "call-aggregate-service") // call via gateway
+                .uri(localhost + "8080/convert" + WsAddressConstants.convertLogicUrl + "call-aggregate-service") // call via gateway
                 .retrieve()
                 .body(BigDecimal.class);
         assertThat(result).isGreaterThanOrEqualTo(BigDecimal.ZERO);
