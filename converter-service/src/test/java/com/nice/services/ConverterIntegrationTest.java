@@ -77,7 +77,7 @@ class ConverterIntegrationTest {
         BigDecimal result = restClient
                 .get()
 //                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
-                .uri(localhost + "8080/convert" + WsAddressConstants.convertLogicUrl + "call-aggregate-service") // call via gateway
+                .uri(localhost + "8080" + WsAddressConstants.convertLogicUrl + "call-aggregate-service") // call via gateway
                 .retrieve()
                 .body(BigDecimal.class);
         assertThat(result).isGreaterThanOrEqualTo(BigDecimal.ZERO);
@@ -95,7 +95,7 @@ class ConverterIntegrationTest {
         int value = 5;
         restClient
                 .get()
-                .uri(localhost + "8080/aggregate/aggregate/" + value)  // call via gateway
+                .uri(localhost + "8080/aggregate/" + value)  // call via gateway
 //                .uri(localhost + aggServerPort + "/aggregate/" + value)
                 .retrieve()
                 .body(Void.class);
@@ -103,7 +103,7 @@ class ConverterIntegrationTest {
         BigDecimal result = restClient
                 .get()
 //                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
-                .uri(localhost + "8080/convert" + WsAddressConstants.convertLogicUrl + "call-aggregate-service")  // call via gateway
+                .uri(localhost + "8080" + WsAddressConstants.convertLogicUrl + "call-aggregate-service")  // call via gateway
                 .retrieve()
                 .body(BigDecimal.class);
         assertThat(result).isGreaterThanOrEqualTo(BigDecimal.valueOf(value));
