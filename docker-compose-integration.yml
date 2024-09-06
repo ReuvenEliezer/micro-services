@@ -1,12 +1,5 @@
 version: "3.9"
 services:
-  zipkin-server:
-    image: openzipkin/zipkin
-    container_name: zipkin-server
-    ports:
-      - "9411:9411"
-    networks:
-      - my-network
   admin-server:
     build:
       context: admin
@@ -26,7 +19,7 @@ services:
     deploy:
       replicas: 2
     depends_on:
-      - zipkin-server
+#      - zipkin-server
       - admin-server
       - gateway
       - eureka-server
@@ -46,7 +39,7 @@ services:
     deploy:
       replicas: 2
     depends_on:
-      - zipkin-server
+#      - zipkin-server
       - admin-server
       - gateway
       - eureka-server
@@ -75,6 +68,9 @@ services:
       context: gateway
       dockerfile: Dockerfile
     image: gateway:latest
+    depends_on:
+      - admin-server
+      - eureka-server
     ports:
       - "8080:8080"
     networks:
