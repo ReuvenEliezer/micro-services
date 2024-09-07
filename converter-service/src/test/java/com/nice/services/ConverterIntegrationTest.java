@@ -5,6 +5,7 @@ import com.nice.utils.WsAddressConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -34,7 +35,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
 //@Disabled
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
+@DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 class ConverterIntegrationTest {
 
     private static final Logger logger = LogManager.getLogger(ConverterIntegrationTest.class);
@@ -61,6 +62,11 @@ class ConverterIntegrationTest {
 
     @Value("${aggregation.server.port}")
     private int aggServerPort;
+
+    @BeforeAll
+    static void setUp() throws InterruptedException {
+//        Thread.sleep(Duration.ofMinutes(2).toMillis());
+    }
 
     @Test
     @Disabled
@@ -92,7 +98,6 @@ class ConverterIntegrationTest {
 
     @Test
     void callAggregateServiceWithValueTest() throws InterruptedException {
-        Thread.sleep(Duration.ofMinutes(1).toMillis());
         logger.info("callAggregateServiceWithValueTest");
         String[] activeProfiles = environment.getActiveProfiles();
         for (String activeProfile : activeProfiles) {
