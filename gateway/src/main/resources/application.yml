@@ -14,12 +14,38 @@ spring:
           uri: lb://aggregation-service
           predicates:
             - Path=/aggregate/**
-
+  boot:
+    admin:
+      client:
+        enabled: false  # If you want Spring Boot Admin to manage services only through Eureka and not via direct registration, you can ensure that direct registration is disabled.
+        url: "http://localhost:8085"
+        instance:
+          service-base-url: "http://localhost:${server.port}"  # הכתובת של ה-Gateway כפי שה-Admin Server ייגש אליו
+management:
+  tracing:
+    sampling:
+      probability: 1.0 # only for testing purpose, switch back to 0.1 for production code
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    loggers:
+      enabled: true
+  metrics:
+    distribution:
+      percentiles-histogram:
+        http:
+          server:
+            requests: true
 eureka:
   client:
+    registerWithEureka: true
+    fetchRegistry: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka/
-
+  instance:
+    preferIpAddress: true
 logging:
   level:
     org.springframework.cloud.gateway: DEBUG

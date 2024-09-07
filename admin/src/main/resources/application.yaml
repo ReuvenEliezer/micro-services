@@ -3,19 +3,21 @@ server:
 eureka:
   client:
     registryFetchIntervalSeconds: 5
-    registerWithEureka: true
+    registerWithEureka: false # to prevent the Admin Server from being monitored by itself through the Eureka server
     fetchRegistry: true
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
   instance:
-    hostname: localhost
+#    hostname: localhost
+    preferIpAddress: true
 spring:
   boot:
     admin:
       discovery:
-        ignored-services: eureka-server
+#        ignored-services: eureka-server
         enabled: true
-#        services: http://eureka:8761/eureka/
+#        services: http://localhost:8761/eureka/
+  #        services: http://eureka:8761/eureka/
   application:
     name: @project.artifactId@
     version: @project.version@

@@ -34,3 +34,14 @@ http://localhost:9411/zipkin/
 http://eureka-server:8761/
 http://localhost:8761/
 docker-compose up --scale aggregation-service=3
+
+Docker Screen-Shot
+![img_1.png](img_1.png)
+![img_2.png](img_2.png)
+
+# Rest call directly to converter-service to aggregation-service to a docker instances (2):
+![img_4.png](img_4.png)
+![img_5.png](img_5.png)
+# Rest call to converter-service to aggregation-service via Gateway:
+![img_3.png](img_3.png)
+
