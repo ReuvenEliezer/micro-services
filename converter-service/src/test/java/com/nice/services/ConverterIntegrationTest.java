@@ -25,6 +25,7 @@ import java.util.Arrays;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 //@ActiveProfiles(profiles = "integration-tests") //https://stackoverflow.com/questions/44055969/in-spring-what-is-the-difference-between-profile-and-activeprofiles
 @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
@@ -39,6 +40,8 @@ class ConverterIntegrationTest {
     private static final String stringType = "string";
     private static final String hexType = "hex";
     private static final String fractionType = "fraction";
+    private static final String GATEWAY_PORT = "8080";
+    private static final String GATEWAY_URI = localhost + GATEWAY_PORT;
 
     @Autowired
     private RestClient restClient;
@@ -77,7 +80,7 @@ class ConverterIntegrationTest {
         BigDecimal result = restClient
                 .get()
 //                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
-                .uri(localhost + "8080" + WsAddressConstants.convertLogicUrl + "call-aggregate-service") // call via gateway
+                .uri(GATEWAY_URI + WsAddressConstants.convertLogicUrl + "call-aggregate-service") // call via gateway
                 .retrieve()
                 .body(BigDecimal.class);
         assertThat(result).isGreaterThanOrEqualTo(BigDecimal.ZERO);
@@ -95,7 +98,7 @@ class ConverterIntegrationTest {
         int value = 5;
         restClient
                 .get()
-                .uri(localhost + "8080/aggregate/" + value)  // call via gateway
+                .uri(GATEWAY_URI + "/aggregate/" + value)  // call via gateway
 //                .uri(localhost + aggServerPort + "/aggregate/" + value)
                 .retrieve()
                 .body(Void.class);
@@ -103,7 +106,7 @@ class ConverterIntegrationTest {
         BigDecimal result = restClient
                 .get()
 //                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
-                .uri(localhost + "8080" + WsAddressConstants.convertLogicUrl + "call-aggregate-service")  // call via gateway
+                .uri(GATEWAY_URI + WsAddressConstants.convertLogicUrl + "call-aggregate-service")  // call via gateway
                 .retrieve()
                 .body(BigDecimal.class);
         assertThat(result).isGreaterThanOrEqualTo(BigDecimal.valueOf(value));
@@ -114,7 +117,7 @@ class ConverterIntegrationTest {
         String res = restClient.
                 get()
 //                .uri(localhost + serverPort + "/actuator/health")
-                .uri(localhost + "8080" + WsAddressConstants.convertLogicUrl + "actuator/health")  // call via gateway
+                .uri(GATEWAY_URI + "actuator/health")  // call via gateway
                 .retrieve()
                 .body(String.class);
         assertThat(res).isEqualTo("{\"status\":\"UP\"}");
@@ -126,11 +129,12 @@ class ConverterIntegrationTest {
         BigDecimal bigDecimal = restClient
                 .post()
 //                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType)
-                .uri(localhost + "8080" + WsAddressConstants.convertLogicUrl + convertType)  // call via gateway
+                .uri(GATEWAY_URI + WsAddressConstants.convertLogicUrl + convertType)  // call via gateway
                 .body(input)
                 .retrieve()
                 .body(BigDecimal.class);
-        Assertions.assertEquals(expected, bigDecimal.intValue());
+        assert bigDecimal != null;
+        assertEquals(expected, bigDecimal.intValue());
 //        sleep(7000);
         // TODO check in the output of aggregation service - the accumulation value by reading writer type
     }
@@ -139,9 +143,9 @@ class ConverterIntegrationTest {
     @ParameterizedTest()
     @MethodSource({"negativeArgumentsProvider"})
     void negativeTest(String input, String convertType) {
-        Assertions.assertThrows(HttpServerErrorException.InternalServerError.class, () ->
+        assertThrows(HttpServerErrorException.InternalServerError.class, () ->
                 restClient.post()
-                        .uri(localhost + "8080" + WsAddressConstants.convertLogicUrl + convertType)  // call via gateway
+                        .uri(GATEWAY_URI + WsAddressConstants.convertLogicUrl + convertType)  // call via gateway
 //                        .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + convertType)
                         .body(input)
                         .retrieve()
