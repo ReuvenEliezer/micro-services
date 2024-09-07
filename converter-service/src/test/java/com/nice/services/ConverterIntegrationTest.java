@@ -78,7 +78,7 @@ class ConverterIntegrationTest {
         logger.info("callAggregateServiceTest");
         String[] activeProfiles = environment.getActiveProfiles();
         for (String activeProfile : activeProfiles) {
-            logger.info("activeProfile: " + activeProfile);
+            logger.info("activeProfile: {}", activeProfile);
         }
         BigDecimal result = restClient
                 .get()
@@ -95,9 +95,10 @@ class ConverterIntegrationTest {
         logger.info("callAggregateServiceWithValueTest");
         String[] activeProfiles = environment.getActiveProfiles();
         for (String activeProfile : activeProfiles) {
-            logger.info("activeProfile: " + activeProfile);
+            logger.info("activeProfile: {}", activeProfile);
         }
 
+        Thread.sleep(5000);
         BigDecimal value = new BigDecimal(5);
         restClient
                 .get()
