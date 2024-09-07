@@ -92,7 +92,7 @@ class ConverterIntegrationTest {
 
     @Test
     void callAggregateServiceWithValueTest() throws InterruptedException {
-        Thread.sleep(20000);
+        Thread.sleep(Duration.ofMinutes(2).toMillis());
         logger.info("callAggregateServiceWithValueTest");
         String[] activeProfiles = environment.getActiveProfiles();
         for (String activeProfile : activeProfiles) {
