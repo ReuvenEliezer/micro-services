@@ -92,7 +92,7 @@ class ConverterIntegrationTest {
 
     @Test
     void callAggregateServiceWithValueTest() throws InterruptedException {
-        Thread.sleep(Duration.ofMinutes(2).toMillis());
+        Thread.sleep(Duration.ofMinutes(1).toMillis());
         logger.info("callAggregateServiceWithValueTest");
         String[] activeProfiles = environment.getActiveProfiles();
         for (String activeProfile : activeProfiles) {
@@ -108,17 +108,22 @@ class ConverterIntegrationTest {
                 .retrieve()
                 .body(Void.class);
 
-        Duration sleepTimeDuration = Duration.ofSeconds(3);
+        Duration sleepTimeDuration = Duration.ofSeconds(10);
         Duration maxTimeToTrying = Duration.ofMinutes(1);
         LocalDateTime startTime = LocalDateTime.now();
-        BigDecimal result;
+        BigDecimal result = null;
         do {
-            result = restClient
-                    .get()
+            try {
+                result = restClient
+                        .get()
 //                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
-                    .uri(GATEWAY_URI + WsAddressConstants.convertLogicUrl + "call-aggregate-service")  // call via gateway
-                    .retrieve()
-                    .body(BigDecimal.class);
+                        .uri(GATEWAY_URI + WsAddressConstants.convertLogicUrl + "call-aggregate-service")  // call via gateway
+                        .retrieve()
+                        .body(BigDecimal.class);
+            } catch (HttpServerErrorException e) {
+                logger.error("failed to execute {} {}", GATEWAY_URI + WsAddressConstants.convertLogicUrl + "call-aggregate-service", e.getMessage());
+            }
+
             logger.info("callAggregateServiceWithValueTest: '{}'", result);
             Thread.sleep(sleepTimeDuration.toMillis());
         } while (startTime.plus(maxTimeToTrying).isAfter(LocalDateTime.now()) && Objects.equals(result, BigDecimal.ZERO));
