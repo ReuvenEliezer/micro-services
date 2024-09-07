@@ -102,7 +102,9 @@ class ConverterIntegrationTest {
 //                .uri(localhost + aggServerPort + "/aggregate/" + value)
                 .retrieve()
                 .body(Void.class);
-        Thread.sleep(500);
+
+        Thread.sleep(2000);
+
         BigDecimal result = restClient
                 .get()
 //                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
