@@ -64,7 +64,7 @@ class ConverterIntegrationTest {
 
     @BeforeAll
     static void setUp() throws InterruptedException {
-//        Thread.sleep(Duration.ofMinutes(2).toMillis());
+        Thread.sleep(Duration.ofMinutes(2).toMillis());
     }
 
     @Test
