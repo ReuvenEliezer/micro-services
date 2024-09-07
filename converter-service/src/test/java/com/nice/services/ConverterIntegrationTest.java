@@ -117,7 +117,7 @@ class ConverterIntegrationTest {
         String res = restClient.
                 get()
 //                .uri(localhost + serverPort + "/actuator/health")
-                .uri(GATEWAY_URI + "actuator/health")  // call via gateway
+                .uri(GATEWAY_URI + "/actuator/health")  // call via gateway
                 .retrieve()
                 .body(String.class);
         assertThat(res).isEqualTo("{\"status\":\"UP\"}");
