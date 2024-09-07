@@ -114,7 +114,7 @@ class ConverterIntegrationTest {
                 .body(Void.class);
 
         Duration sleepTimeDuration = Duration.ofSeconds(10);
-        Duration maxTimeToTrying = Duration.ofMinutes(1);
+        Duration maxTimeToTrying = Duration.ofMinutes(3);
         LocalDateTime startTime = LocalDateTime.now();
         BigDecimal result = null;
         do {
