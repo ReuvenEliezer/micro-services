@@ -95,7 +95,7 @@ class ConverterIntegrationTest {
             logger.info("activeProfile: " + activeProfile);
         }
 
-        int value = 5;
+        BigDecimal value = new BigDecimal(5);
         restClient
                 .get()
                 .uri(GATEWAY_URI + "/aggregate/" + value)  // call via gateway
@@ -109,7 +109,8 @@ class ConverterIntegrationTest {
                 .uri(GATEWAY_URI + WsAddressConstants.convertLogicUrl + "call-aggregate-service")  // call via gateway
                 .retrieve()
                 .body(BigDecimal.class);
-        assertThat(result).isGreaterThanOrEqualTo(BigDecimal.valueOf(value));
+        logger.info("callAggregateServiceWithValueTest: '{}'", result);
+        assertThat(result).isGreaterThanOrEqualTo(value);
     }
 
     @Test
