@@ -103,7 +103,7 @@ class ConverterIntegrationTest {
                 .retrieve()
                 .body(Void.class);
 
-        Thread.sleep(2000);
+        Thread.sleep(5000);
 
         BigDecimal result = restClient
                 .get()
