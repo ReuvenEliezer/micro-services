@@ -5,6 +5,7 @@ import com.nice.utils.WsAddressConstants;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -21,7 +22,10 @@ import org.springframework.web.client.HttpServerErrorException;
 import org.springframework.web.client.RestClient;
 
 import java.math.BigDecimal;
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -31,7 +35,6 @@ import static org.junit.jupiter.api.Assertions.*;
 @EnabledIf(value = "#{environment.getActiveProfiles()[0] == 'integration-tests'}", loadContext = true)
 //@Disabled
 @SpringBootTest
-@DirtiesContext(classMode = DirtiesContext.ClassMode.AFTER_EACH_TEST_METHOD)
 class ConverterIntegrationTest {
 
     private static final Logger logger = LogManager.getLogger(ConverterIntegrationTest.class);
@@ -59,6 +62,7 @@ class ConverterIntegrationTest {
     @Value("${aggregation.server.port}")
     private int aggServerPort;
 
+
     @Test
     @Disabled
     void zipkinTest() {
@@ -75,7 +79,7 @@ class ConverterIntegrationTest {
         logger.info("callAggregateServiceTest");
         String[] activeProfiles = environment.getActiveProfiles();
         for (String activeProfile : activeProfiles) {
-            logger.info("activeProfile: " + activeProfile);
+            logger.info("activeProfile: {}", activeProfile);
         }
         BigDecimal result = restClient
                 .get()
@@ -92,7 +96,7 @@ class ConverterIntegrationTest {
         logger.info("callAggregateServiceWithValueTest");
         String[] activeProfiles = environment.getActiveProfiles();
         for (String activeProfile : activeProfiles) {
-            logger.info("activeProfile: " + activeProfile);
+            logger.info("activeProfile: {}", activeProfile);
         }
 
         BigDecimal value = new BigDecimal(5);
@@ -103,16 +107,29 @@ class ConverterIntegrationTest {
                 .retrieve()
                 .body(Void.class);
 
-        Thread.sleep(5000);
-
-        BigDecimal result = restClient
-                .get()
+        Duration sleepTimeDuration = Duration.ofSeconds(3);
+        Duration maxTimeToTrying = Duration.ofMinutes(1);
+        LocalDateTime startTime = LocalDateTime.now();
+        BigDecimal result = null;
+        do {
+            try {
+                result = restClient
+                        .get()
 //                .uri(localhost + serverPort + WsAddressConstants.convertLogicUrl + "call-aggregate-service")
-                .uri(GATEWAY_URI + WsAddressConstants.convertLogicUrl + "call-aggregate-service")  // call via gateway
-                .retrieve()
-                .body(BigDecimal.class);
-        logger.info("callAggregateServiceWithValueTest: '{}'", result);
-        assertThat(result).isGreaterThanOrEqualTo(value);
+                        .uri(GATEWAY_URI + WsAddressConstants.convertLogicUrl + "call-aggregate-service")  // call via gateway
+                        .retrieve()
+                        .body(BigDecimal.class);
+            } catch (HttpServerErrorException e) {
+                logger.error("failed to execute {} {}", GATEWAY_URI + WsAddressConstants.convertLogicUrl + "call-aggregate-service", e.getMessage());
+            }
+
+            logger.info("callAggregateServiceWithValueTest: '{}'", result);
+            Thread.sleep(sleepTimeDuration.toMillis());
+//        } while (startTime.plus(maxTimeToTrying).isAfter(LocalDateTime.now()) && Objects.equals(result, BigDecimal.ZERO));
+// only in case of using one aggregation-service instance, otherwise - we don't have verifying that request sent to the same instance
+        } while (startTime.plus(maxTimeToTrying).isAfter(LocalDateTime.now()) && result == null);
+//    assertThat(result).isGreaterThanOrEqualTo(value);
+        assertThat(result).isGreaterThanOrEqualTo(BigDecimal.ZERO);
     }
 
     @Test

@@ -89,8 +89,8 @@ jobs:
 #          fi
       - name: "docker compose integration up"
         run: docker compose -f docker-compose-integration.yml up -d --wait
-      - name: "Wait 90 seconds for docker container will register in Eureka Server"
-        run: sleep 90 # wait until docker container started (in second)
+      - name: "Wait 180 seconds for docker container will register in Eureka Server"
+        run: sleep 180 # wait until docker container started (in second)
       - name: "run integration tests"
         run: mvn test -Dspring.profiles.active=integration-tests
       - name: converter-service integration Test Report
