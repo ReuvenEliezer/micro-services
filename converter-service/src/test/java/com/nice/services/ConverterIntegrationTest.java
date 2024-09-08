@@ -127,7 +127,7 @@ class ConverterIntegrationTest {
             Thread.sleep(sleepTimeDuration.toMillis());
 //        } while (startTime.plus(maxTimeToTrying).isAfter(LocalDateTime.now()) && Objects.equals(result, BigDecimal.ZERO));
 // only in case of using one aggregation-service instance, otherwise - we don't have verifying that request sent to the same instance
-        } while (startTime.plus(maxTimeToTrying).isAfter(LocalDateTime.now()));
+        } while (startTime.plus(maxTimeToTrying).isAfter(LocalDateTime.now()) && result == null);
 //    assertThat(result).isGreaterThanOrEqualTo(value);
         assertThat(result).isGreaterThanOrEqualTo(BigDecimal.ZERO);
     }
