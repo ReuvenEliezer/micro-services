@@ -20,7 +20,7 @@
     </properties>
 
     <dependencies>
-<!--        http://localhost:8080/applications-->
+<!--        http://localhost:8085/applications-->
         <dependency>
             <groupId>de.codecentric</groupId>
             <artifactId>spring-boot-admin-starter-server</artifactId>

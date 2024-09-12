@@ -33,6 +33,10 @@ spring:
 #    user:
 #      name: client
 #      password: client
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost} # container name
+      port: 6379
 management:
   tracing:
     sampling:
