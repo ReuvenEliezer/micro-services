@@ -17,10 +17,12 @@ spring:
   boot:
     admin:
       client:
+        enabled: false  # If you want Spring Boot Admin to manage services only through Eureka and not via direct registration, you can ensure that direct registration is disabled.
         url: "http://localhost:8085"
         instance:
-          service-base-url: "http://${spring.application.name}:${server.port}"
-#          service-base-url: "http://localhost:${server.port}"
+#          service-base-url: "http://${spring.application.name}:${server.port}"
+#          service-base-url: "http://aggregation-service:8080"
+          service-base-url: "http://localhost:${server.port}"
 #          metadata:
 #            user:
 #              name: ${spring.security.user.name}
@@ -31,6 +33,10 @@ spring:
 #    user:
 #      name: client
 #      password: client
+  data:
+    redis:
+      host: ${SPRING_REDIS_HOST:localhost} # container name
+      port: 6379
 management:
   tracing:
     sampling:
