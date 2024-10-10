@@ -11,8 +11,8 @@
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
-    <groupId>com.nice</groupId>
-    <artifactId>services</artifactId>
+    <groupId>com.reuven</groupId>
+    <artifactId>micro-services</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>pom</packaging>
 
