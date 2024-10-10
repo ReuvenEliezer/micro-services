@@ -1,4 +1,4 @@
-# Nice Microservices Documentation
+# Microservices Documentation
 
 ## Admin
 
@@ -28,7 +28,7 @@
 - Build and run tests on the master branch for every pull request or push.
 - If any tests fail, the build will also fail.
 - View test results under "Actions" in the GitHub repository:
-  https://github.com/ReuvenEliezer/NiceMicroServices/actions
+  https://github.com/ReuvenEliezer/micro-services/actions
 
 http://localhost:9411/zipkin/
 http://eureka-server:8761/
