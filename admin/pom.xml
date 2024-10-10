@@ -14,10 +14,6 @@
     <name>admin</name>
     <description>admin</description>
 
-    <properties>
-        <spring-boot-admin.version>3.3.4</spring-boot-admin.version>
-    </properties>
-
     <dependencies>
 <!--        http://localhost:8085/applications-->
         <dependency>
@@ -43,20 +39,7 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-
     </dependencies>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>de.codecentric</groupId>
-                <artifactId>spring-boot-admin-dependencies</artifactId>
-                <version>${spring-boot-admin.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
 
     <build>
         <plugins>
