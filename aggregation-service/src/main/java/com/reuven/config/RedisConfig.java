@@ -2,6 +2,7 @@ package com.reuven.config;
 
 import io.lettuce.core.ClientOptions;
 import io.lettuce.core.ReadFrom;
+import io.lettuce.core.api.StatefulConnection;
 import io.lettuce.core.resource.DefaultClientResources;
 import io.lettuce.core.resource.Delay;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
@@ -44,7 +45,7 @@ public class RedisConfig {
         RedisStaticMasterReplicaConfiguration redisConfiguration = new RedisStaticMasterReplicaConfiguration(redisHost, redisPort);
 //        RedisStaticMasterReplicaConfiguration redisConfiguration = new RedisStaticMasterReplicaConfiguration(internalWriterHost, internalWriterPort);
 //        redisConfiguration.addNode(internalReaderHost, internalReaderPort);
-        GenericObjectPoolConfig<Object> poolConfig = new GenericObjectPoolConfig<>();
+        GenericObjectPoolConfig<StatefulConnection<?, ?>> poolConfig = new GenericObjectPoolConfig<>();
         poolConfig.setMinIdle(1);
         poolConfig.setMaxTotal(5);
         LettucePoolingClientConfiguration clientConfiguration = LettucePoolingClientConfiguration.builder()
