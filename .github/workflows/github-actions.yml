@@ -25,12 +25,12 @@ jobs:
       COMPOSE_FILE: docker-compose-integration.yml
     steps:
       # This step uses the `actions/checkout` action to download a copy of your repository on the runner.
-      - uses: actions/checkout@v4.1.7
-      # This step uses the `actions/setup-java` action to configure the Eclipse Temurin (Java) 17 JDK by Eclipse Adoptium.
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4.2.2
+      - uses: actions/checkout@v4.2.2
+      # This step uses the `actions/setup-java` action to configure the Eclipse Temurin (Java) 21 JDK by Eclipse Adoptium.
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4.7.1
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'corretto'
 
 #      - name: "Set up environment"
@@ -59,7 +59,7 @@ jobs:
 #        with:
 #          report_paths: converter-service/target/surefire-reports/*.xml
       - name: converter-service JUnit Test Report
-        uses: dorny/test-reporter@v1.9.1 #{owner}/{repository}@{ref}
+        uses: dorny/test-reporter@v2.1.0 #{owner}/{repository}@{ref}
         if: (success() || failure())
         #        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
@@ -68,7 +68,7 @@ jobs:
           reporter: java-junit
           fail-on-error: true
       - name: aggregation-service JUnit Test Report #for analysis tests report
-        uses: dorny/test-reporter@v1.9.1 #{owner}/{repository}@{ref} https://github.com/marketplace/actions/test-reporter
+        uses: dorny/test-reporter@v2.1.0 #{owner}/{repository}@{ref} https://github.com/marketplace/actions/test-reporter
         if: (success() || failure())
 #        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
@@ -94,7 +94,7 @@ jobs:
       - name: "run integration tests"
         run: mvn test -Dspring.profiles.active=integration-tests
       - name: converter-service integration Test Report
-        uses: dorny/test-reporter@v1.9.1 #{owner}/{repository}@{ref}
+        uses: dorny/test-reporter@v2.1.0 #{owner}/{repository}@{ref}
         if: (success() || failure())
        #        if: github.actor != 'dependabot[bot]' && (success() || failure())
         with:
@@ -112,7 +112,7 @@ jobs:
 
       # Now you can pass ${{ steps.buildnumber.outputs.build_number }} to the next steps.
       - name: Another step as an example
-        uses: actions/hello-world-docker-action@v1
+        uses: actions/hello-world-docker-action@v2
         with:
           who-to-greet: ${{ steps.buildnumber.outputs.build_number }}
       - name: Output Run ID
